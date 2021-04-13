@@ -18,3 +18,11 @@ def main:
     print("not much ...")
 
 #+end_src
+
+* Third Section
+
+Some image:
+
+#+attr_html: :width 300px
+#+attr_latex: :width 300px
+[[./img/35-donut-emoji.png]]
