@@ -1,9 +1,9 @@
-#+TITLE: Tomas Aleixo
+#+TITLE: Blog
 #+AUTHOR: Tomas Aleixo
 #+DESCRIPTION:Not much the moment
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 #+OPTIONS: num:nil
 
-* First entry
+No entries so far ... 🤷🏽‍♂
 
-Very empty ...
+* Working on it...️

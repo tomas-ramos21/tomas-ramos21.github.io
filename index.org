@@ -1,30 +1,67 @@
-#+TITLE: Tomas Aleixo
+#+TITLE: About me
 #+AUTHOR: Tomas Aleixo
 #+DESCRIPTION:Not much the moment
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 #+OPTIONS: num:nil
 
-* First Section
+#+begin_justify
+I grew up in Massamá, Portugal a suburb of Lisbon. My first jobs were as a chef, which took me to London in my late teens to work in a 2 Michelin-starred restaurant and the 4th best in the world at the time. Eventually, I left hospitality to pursue another passion I had kept on the back burner, technology. I went to Singapore where attended college and graduated in Computer Science. Since then I have worked in the world of Big Data as a Data Engineer and Scientist, which instilled in me a passion for mathematics and high-performance computing.
+#+end_justify
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ultricies mi quis hendrerit dolor magna. Leo in vitae turpis massa sed. Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Neque aliquam vestibulum morbi blandit. Leo integer malesuada nunc vel risus commodo viverra. Eget velit aliquet sagittis id consectetur purus ut faucibus pulvinar. Orci dapibus ultrices in iaculis nunc sed. Tempus iaculis urna id volutpat lacus laoreet. Sapien eget mi proin sed libero enim. Tincidunt id aliquet risus feugiat in. Amet tellus cras adipiscing enim eu. At risus viverra adipiscing at in tellus integer. Nam aliquam sem et tortor consequat id porta. Tempor orci dapibus ultrices in iaculis nunc sed augue. Pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Consectetur purus ut faucibus pulvinar elementum integer enim neque volutpat.
+* Personal Projects
 
-* Second Section
+#+MACRO: donut @@html:<a href="https://github.com/tomas-ramos21/Donut"><img src="./img/donut.png" align="center" width="150" style="margin-left: 3%"></a>@@
+#+MACRO: cookie @@html:<a href="https://github.com/tomas-ramos21/Cookie"><img src="./img/cookie.png" align="center" width="200" style="margin-left: 10%"></a>@@
+#+MACRO: fries @@html:<a href="https://github.com/tomas-ramos21/Fries"><img src="./img/fries.png" align="center" width="125" style="margin-left: 10%"></a>@@
 
-Some code.
+#+begin_justify
+During the weekends I work on several personal projects which are hosted on github, make sure you check them if you are interested in cluster computing, data science and high-performance computing. I have other small projects such as Emacs packages, that I use on a daily basis. Oh and all my projects are named around food as an homage to my chef career.
+#+end_justify
 
-#+begin_src python
+{{{donut}}}
+{{{cookie}}}
+{{{fries}}}
 
-def main:
-    print("not much ...")
+* Work Experience
+# Work Macros
+#+MACRO: apple @@html:<a href="https://www.apple.com"><img src="./img/apple.png" align="right" width="25"></a>@@
+#+MACRO: mobilewalla @@html:<a href="https://www.mobilewalla.com"><img src="./img/mw.png" align="right" width="70"></a>@@
+#+MACRO: utopia @@html:<a href="https://www.utopiainc.com"><img src="./img/utopia.png" align="right" width="60"></a>@@
 
-#+end_src
+{{{apple}}}
+*** Apple
+-----
+Prominent American hardware and software company best known for the iPhone, MacBooks, innovative marketing and flawless customer experience.
+- *Location:* Singapore
+- *Role:* Data Engineer
+- *Tenure:* June 2019 until present
 
-* Third Section
+{{{mobilewalla}}}
+*** MobileWalla
+-----
+MobileWalla collects data from mobile devices, which is then used to create segments for targeted advertising, audience exploration and measure ad campaigns conversion rates.
+- *Location:* Singapore
+- *Role:* Data Engineer
+- *Tenure:* June 2019 to June 2020
 
-Some image:
+{{{utopia}}}
+*** Utopia
+-----
+Utopia is SAP’s preferred partner for Master Data Governance and Enterprise Asset Management. Its ranked in SAP’s top 5 extensions.
+- *Location:* Bangalore, India
+- *Role:* Data Scientist Intern
+- *Tenure:* December 2018 to May 2019
 
-#+attr_html: :width 300px
-#+attr_latex: :width 300px
-[[./img/35-donut-emoji.png]]
+* Education
+# University Macros
+#+MACRO: murdoch @@html:<a href="https://www.murdoch.edu.au"><img src="./img/murdoch.png" align="right" width="80"></a>@@
 
-* [[https://tomas-ramos21.github.io/blog.html][Programming Blog]]
+*** Murdoch University {{{murdoch}}}
+-----
+/Bachelors of Science in Computer Science & Business Information Systems (Double Major)/
+- *Class Rank:* Distinction (Top Class Percentile)
+- *Location:* Singapore
+- *Tenure:* July 2016 to May 2019
+
+* Programming Blog
+Not tired of me yet? You can check my [[https://tomas-ramos21.github.io/blog.html][blog]] ... I write about several programming topics, challenges and opinions.
