@@ -4,23 +4,20 @@
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 #+OPTIONS: num:nil
 
+#+ATTR_HTML: :style margin-bottom: 50px;
 #+begin_justify
 I grew up in Massamá, Portugal a suburb of Lisbon. My first jobs were as a chef, which took me to London in my late teens to work in a 2 Michelin-starred restaurant and the 4th best in the world at the time. Eventually, I left hospitality to pursue another passion I had kept on the back burner, technology. I went to Singapore where attended college and graduated in Computer Science. Since then I have worked in the world of Big Data as a Data Engineer and Scientist, which instilled in me a passion for mathematics and high-performance computing.
 #+end_justify
 
 * Personal Projects
 
-#+MACRO: donut @@html:<a href="https://github.com/tomas-ramos21/Donut"><img src="./img/donut.png" align="center" width="150" style="margin-left: 3%"></a>@@
-#+MACRO: cookie @@html:<a href="https://github.com/tomas-ramos21/Cookie"><img src="./img/cookie.png" align="center" width="200" style="margin-left: 10%"></a>@@
-#+MACRO: fries @@html:<a href="https://github.com/tomas-ramos21/Fries"><img src="./img/fries.png" align="center" width="125" style="margin-left: 10%"></a>@@
+#+MACRO: images @@html:<div style="display: flex; margin-top:70px; margin-bottom:50px;"><div style="flex: 33.3%; padding=5px;"><div style="text-align: center"><a href="https://github.com/tomas-ramos21/Donut"><img src="./img/donut.png" width="150"><div width="150" style="text-align: center; margin-top: 10px;">Donut</div></div></a></div><div style="flex: 33.3%; padding=5px;"><div style="text-align: center"><a href="https://github.com/tomas-ramos21/Cookie"><img src="./img/cookie.png" width="230"><div width="230" style="text-align: center; margin-top: 10px;">Cookie</div></div></a></div><div style="flex: 33.3%; padding=5px;"><div style="text-align: center"><a href="https://github.com/tomas-ramos21/Fries"><img src="./img/fries.png" width="125"><div width="125" style="text-align: center; margin-top: 10px">Fries</div></div></a></div>@@
 
 #+begin_justify
 During the weekends I work on several personal projects which are hosted on github, make sure you check them if you are interested in cluster computing, data science and high-performance computing. I have other small projects such as Emacs packages, that I use on a daily basis. Oh and all my projects are named around food as an homage to my chef career.
 #+end_justify
 
-{{{donut}}}
-{{{cookie}}}
-{{{fries}}}
+{{{images}}}
 
 * Work Experience
 # Work Macros
@@ -28,6 +25,7 @@ During the weekends I work on several personal projects which are hosted on gith
 #+MACRO: mobilewalla @@html:<a href="https://www.mobilewalla.com"><img src="./img/mw.png" align="right" width="70"></a>@@
 #+MACRO: utopia @@html:<a href="https://www.utopiainc.com"><img src="./img/utopia.png" align="right" width="60"></a>@@
 
+#+ATTR_HTML: :style margin-bottom: 50px;
 {{{apple}}}
 *** Apple
 -----
@@ -36,6 +34,7 @@ Prominent American hardware and software company best known for the iPhone, MacB
 - *Role:* Data Engineer
 - *Tenure:* June 2019 until present
 
+#+ATTR_HTML: :style margin-bottom: 75px;
 {{{mobilewalla}}}
 *** MobileWalla
 -----
@@ -44,6 +43,7 @@ MobileWalla collects data from mobile devices, which is then used to create segm
 - *Role:* Data Engineer
 - *Tenure:* June 2019 to June 2020
 
+#+ATTR_HTML: :style margin-bottom: 75px;
 {{{utopia}}}
 *** Utopia
 -----
@@ -53,9 +53,9 @@ Utopia is SAP’s preferred partner for Master Data Governance and Enterprise As
 - *Tenure:* December 2018 to May 2019
 
 * Education
-# University Macros
-#+MACRO: murdoch @@html:<a href="https://www.murdoch.edu.au"><img src="./img/murdoch.png" align="right" width="80"></a>@@
 
+#+MACRO: murdoch @@html:<a href="https://www.murdoch.edu.au"><img src="./img/murdoch.png" align="right" width="80"></a>@@
+#+ATTR_HTML: :style margin-top: 50px;
 *** Murdoch University {{{murdoch}}}
 -----
 /Bachelors of Science in Computer Science & Business Information Systems (Double Major)/
