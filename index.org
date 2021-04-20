@@ -21,9 +21,10 @@ During the weekends I work on several personal projects which are hosted on gith
 
 * Work Experience
 # Work Macros
-#+MACRO: apple @@html:<a href="https://www.apple.com"><img src="./img/apple.png" align="right" width="25"></a>@@
-#+MACRO: mobilewalla @@html:<a href="https://www.mobilewalla.com"><img src="./img/mw.png" align="right" width="70"></a>@@
-#+MACRO: utopia @@html:<a href="https://www.utopiainc.com"><img src="./img/utopia.png" align="right" width="60"></a>@@
+#+MACRO: separator @@html:<div></div@@
+#+MACRO: apple @@html:<a href="https://www.apple.com"><img src="./img/apple.png" align="right" width="25" style="margin-top: 5px;"></a>@@
+#+MACRO: mobilewalla @@html:<a href="https://www.mobilewalla.com"><img src="./img/mw.png" align="right" width="70" style="margin-top: 25px;"></a>@@
+#+MACRO: utopia @@html:<a href="https://www.utopiainc.com"><img src="./img/utopia.png" align="right" width="60" style="margin-top: 15px;"></a>@@
 
 #+ATTR_HTML: :style margin-bottom: 50px;
 {{{apple}}}
@@ -34,7 +35,7 @@ Prominent American hardware and software company best known for the iPhone, MacB
 - *Role:* Data Engineer
 - *Tenure:* June 2019 until present
 
-#+ATTR_HTML: :style margin-bottom: 75px;
+#+ATTR_HTML: :style margin-bottom: 50px;
 {{{mobilewalla}}}
 *** MobileWalla
 -----
@@ -43,7 +44,7 @@ MobileWalla collects data from mobile devices, which is then used to create segm
 - *Role:* Data Engineer
 - *Tenure:* June 2019 to June 2020
 
-#+ATTR_HTML: :style margin-bottom: 75px;
+#+ATTR_HTML: :style margin-bottom: 50px;
 {{{utopia}}}
 *** Utopia
 -----
@@ -52,16 +53,22 @@ Utopia is SAP’s preferred partner for Master Data Governance and Enterprise As
 - *Role:* Data Scientist Intern
 - *Tenure:* December 2018 to May 2019
 
+
+#+ATTR_HTML: :style margin-top: 75px;
+{{{separator}}}
 * Education
 
 #+MACRO: murdoch @@html:<a href="https://www.murdoch.edu.au"><img src="./img/murdoch.png" align="right" width="80"></a>@@
-#+ATTR_HTML: :style margin-top: 50px;
-*** Murdoch University {{{murdoch}}}
+#+ATTR_HTML: :style margin-top: 25px;
+{{{murdoch}}}
+*** Murdoch University
 -----
 /Bachelors of Science in Computer Science & Business Information Systems (Double Major)/
 - *Class Rank:* Distinction (Top Class Percentile)
 - *Location:* Singapore
 - *Tenure:* July 2016 to May 2019
 
+#+ATTR_HTML: :style margin-top: 60px;
+{{{separator}}}
 * Programming Blog
 Not tired of me yet? You can check my [[https://tomas-ramos21.github.io/blog.html][blog]] ... I write about several programming topics, challenges and opinions.
