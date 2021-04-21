@@ -6,15 +6,15 @@
 
 #+ATTR_HTML: :style margin-bottom: 50px;
 #+begin_justify
-I grew up in Massamá, Portugal a suburb of Lisbon. My first jobs were as a chef, which took me to London in my late teens to work in a 2 Michelin-starred restaurant and the 4th best in the world at the time. Eventually, I left hospitality to pursue another passion I had kept on the back burner, technology. I went to Singapore where attended college and graduated in Computer Science. Since then I have worked in the world of Big Data as a Data Engineer and Scientist, which instilled in me a passion for mathematics and high-performance computing.
+I grew up in Massamá, Portugal a suburb of Lisbon. My first jobs were as a chef, which took me to London in my late teens to work in a 2 Michelin-starred restaurant and the 4th best in the world at the time. Eventually, I left hospitality to pursue another passion I had kept on the back burner, technology. I went to Singapore where I attended college and graduated in Computer Science. Since then I worked in the world of Big Data as a Data Engineer and Scientist, which instilled in me a passion for mathematics and high-performance computing.
 #+end_justify
 
 * Personal Projects
 
-#+MACRO: images @@html:<div style="display: flex; margin-top:70px; margin-bottom:50px;"><div style="flex: 33.3%; padding=5px;"><div style="text-align: center"><a href="https://github.com/tomas-ramos21/Donut"><img src="./img/donut.png" width="150"><div width="150" style="text-align: center; margin-top: 10px;">Donut</div></div></a></div><div style="flex: 33.3%; padding=5px;"><div style="text-align: center"><a href="https://github.com/tomas-ramos21/Cookie"><img src="./img/cookie.png" width="230"><div width="230" style="text-align: center; margin-top: 13px;">Cookie</div></div></a></div><div style="flex: 33.3%; padding=5px;"><div style="text-align: center"><a href="https://github.com/tomas-ramos21/Fries"><img src="./img/fries.png" width="125"><div width="125" style="text-align: center; margin-top: 19px">Fries</div></div></a></div>@@
+#+MACRO: images @@html:<div style="display: flex; margin-top:70px; margin-bottom:70px;"><div style="flex: 33.3%; padding=5px;"><div style="text-align: center"><a href="https://github.com/tomas-ramos21/Donut"><img src="./img/donut.png" width="150"><div width="150" style="text-align: center; margin-top: 10px;">Donut</div></div></a></div><div style="flex: 33.3%; padding=5px;"><div style="text-align: center"><a href="https://github.com/tomas-ramos21/Cookie"><img src="./img/cookie.png" width="230"><div width="230" style="text-align: center; margin-top: 13px;">Cookie</div></div></a></div><div style="flex: 33.3%; padding=5px;"><div style="text-align: center"><a href="https://github.com/tomas-ramos21/Fries"><img src="./img/fries.png" width="125"><div width="125" style="text-align: center; margin-top: 19px">Fries</div></div></a></div>@@
 
 #+begin_justify
-During the weekends I work on several personal projects which are hosted on github, make sure you check them if you are interested in cluster computing, data science and high-performance computing. I have other small projects such as Emacs packages, that I use on a daily basis. Oh and all my projects are named around food as an homage to my chef career.
+During the weekends I work on several personal projects which are hosted on github. All of them are meant to help me do my job faster or more efficiently, make sure you check them if you are interested in cluster computing, data science and high-performance computing. I have other small projects such as Emacs packages, that I use on a daily basis. Oh and all my projects are named after food as an homage to my chef career.
 #+end_justify
 
 {{{images}}}
@@ -26,11 +26,10 @@ During the weekends I work on several personal projects which are hosted on gith
 #+MACRO: mobilewalla @@html:<a href="https://www.mobilewalla.com"><img src="./img/mw.png" align="right" width="70" style="margin-top: 25px;"></a>@@
 #+MACRO: utopia @@html:<a href="https://www.utopiainc.com"><img src="./img/utopia.png" align="right" width="60" style="margin-top: 15px;"></a>@@
 
-#+ATTR_HTML: :style margin-bottom: 50px;
 {{{apple}}}
 *** Apple
 -----
-Prominent American hardware and software company best known for the iPhone, MacBooks, innovative marketing and flawless customer experience.
+I work for the Apple Media Prodcuts team which is responsible for the software you are used to see and use on Apple devices (e.g. App Store, Apple Music, Podcasts, etc.). My role is to design tools for A/B experimentation, statistics, large-scale data processing and maintain several data pipelines for these applications.
 - *Location:* Singapore
 - *Role:* Data Engineer
 - *Tenure:* June 2019 until present
@@ -39,7 +38,7 @@ Prominent American hardware and software company best known for the iPhone, MacB
 {{{mobilewalla}}}
 *** MobileWalla
 -----
-MobileWalla collects data from mobile devices, which is then used to create segments for targeted advertising, audience exploration and measure ad campaigns conversion rates.
+MobileWalla collects data from mobile devices, which is then used to create segments for targeted advertising and audience exploration. During my time at MobileWalla I was responsible for developing several high-throughput data pipelines and optimise the resource allocation for these clusters. In some cases the cost of the AWS's cluster reduced as much as 91%.
 - *Location:* Singapore
 - *Role:* Data Engineer
 - *Tenure:* June 2019 to June 2020
@@ -48,7 +47,7 @@ MobileWalla collects data from mobile devices, which is then used to create segm
 {{{utopia}}}
 *** Utopia
 -----
-Utopia is SAP’s preferred partner for Master Data Governance and Enterprise Asset Management. Its ranked in SAP’s top 5 extensions.
+Utopia is one of the top SAP's extensions, and their preferred partner for Master Data Governance. At Utopia I worked in the Data Science Research team where we applied the latest machine learning methods to solve long-standing industry issues. Personally I worked on information extraction from digitised documents my proposed solution merged Deep Learning (i.e. CNN) with Clustering methods (i.e. KNN) and image processing (i.e OpenCV).
 - *Location:* Bangalore, India
 - *Role:* Data Scientist Intern
 - *Tenure:* December 2018 to May 2019
