@@ -47,7 +47,7 @@ MobileWalla collects data from mobile devices, which is then used to create segm
 {{{utopia}}}
 *** Utopia
 -----
-Utopia is one of the top SAP's extensions, and their preferred partner for Master Data Governance. At Utopia I worked in the Data Science Research team where we applied the latest machine learning methods to solve long-standing industry issues. Personally I worked on information extraction from digitised documents my proposed solution merged Deep Learning (i.e. CNN) with Clustering methods (i.e. KNN) and image processing (i.e OpenCV).
+Utopia is one of the top SAP's extensions, and their preferred partner for Master Data Governance. At Utopia I worked in the Data Science Research team where we applied the latest machine learning methods to solve long-standing industry issues. Personally I worked on information extraction from digitised documents my proposed solution merged Deep Learning (i.e. CNNs) with Clustering methods (i.e. KNN) and image processing (i.e OpenCV).
 - *Location:* Bangalore, India
 - *Role:* Data Scientist Intern
 - *Tenure:* December 2018 to May 2019
