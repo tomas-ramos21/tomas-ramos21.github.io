@@ -72,3 +72,13 @@ Utopia is SAP’s preferred partner for Master Data Governance and Enterprise As
 {{{separator}}}
 * Programming Blog
 Not tired of me yet? You can check my [[https://tomas-ramos21.github.io/blog.html][blog]] ... I write about several programming topics, challenges and opinions.
+
+*** main
+The main function of the program.
+ - *Parameter - args[]*: Array of arguments
+ - *Parameter - argc*: Number of arguments in the array
+ - *Return*: The exit status of the program
+#+begin_src c
+ int main(char* args[], int argc)
+#+end_src
+A long description of the main function which is the entry point of the program
