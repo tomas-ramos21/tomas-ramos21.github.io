@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400&display=swap');
 
 * {
     margin: 0;
@@ -8,7 +10,7 @@
 
 header {
     border-bottom: solid 2px #DA6677;
-    background: #082A35;
+    background: #21404B;
 }
 
 .logo-container {
@@ -21,7 +23,7 @@ header {
     font-family: 'Orbitron', sans-serif;
     font-size: 50px;
     color: #8BA0A5;
-    text-shadow: 1px 1px #2A4953;
+    text-shadow: 2px 2px #082A35;
     text-decoration: none;
 }
 
@@ -61,6 +63,7 @@ div.navbar-container {
 
 #eye-catch {
     background: #EFEFEF;
+    height: 60vh;
     padding: 20px;
 }
 
@@ -70,6 +73,7 @@ div.navbar-container {
     padding: 10vh 0px;
     margin: 0px auto;
     width: 90%;
+    height: 50%;
     max-width: 62em;
 }
 
@@ -87,29 +91,91 @@ div.navbar-container {
     border-left: solid 1px #6D6D6D;
 }
 
-.footer-first-lvl {
-    background: #2B4D57;
-    padding: 40px;
+.social-media-header {
+    background: #6EC4E1;
+    display: flex;
+    justify-content: center;
+    height: 10vh;
 }
 
-.footer-second-lvl {
+.social-media-header div h1 {
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    color: #FFFFFF;
+    font-size: 40px;
+    line-height: 10vh;
+    text-shadow: 3px 3px #1A94BD;
+}
+
+.social-media {
+    background: #24708c;
+}
+
+.social-media div {
+    display: flex;
+    align-content: center;
+    margin: 0px auto;
+    width: 90%;
+    max-width: 62em;
+}
+
+.social-media-column {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 40px 0px;
+}
+
+.social-media-column i {
+    flex: 1;
+    font-size: 70px;
+    padding-right: 30px;
+    color: #FFFFFF;
+}
+
+.social-media-column p {
+    flex: 9;
+    padding: 30px;
+    border-left: solid 1px #FFFFFF;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: #FFFFFF;
+}
+
+.social-media-button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.social-media-button a {
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+    color: #FFFFFF;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: normal;
+    padding: 15px;
+    max-width: 200px;
+    border-radius: 100px;
+    background: #D46578;
+}
+
+.social-media-button a:hover {
+    opacity: 0.65;
+    transition: opacity 0.5s;
+}
+
+.footer {
     display: block;
     box-shadow: 0 50vh 0 50vh #6EC4E1;
     justify-content: center;
     flex-basis: 50%;
 }
 
-.footer-second-lvl > div > div:nth-of-type(2){
-    float: right;
-}
-
-.footer-second-lvl div div li {
-    Display: inline;
+.footer div div li {
+    display: inline;
     font-size: 30px;
     margin-left: 20px;
     margin-right: 20px;
-}
-
-.footer-second-lvl div div li a {
-    color: #609EB4;
 }
