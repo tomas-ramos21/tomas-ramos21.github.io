@@ -37,22 +37,22 @@ header {
 }
 
 div.navbar-container {
-    width: 40%;
-    border-top: solid 1px #FFFFFF;
+    width: 55%;
     margin: 0px auto;
 }
 
 .navbar-container {
     display: flex;
+    border-top: solid 1px #FFFFFF;
     justify-content: center;
-    padding: 20px;
+    padding: 20px 0px;
+    margin-top: 15px;
 }
 
 .navbar-container li {
     font-family: 'Montserrat', sans-serif;
     display: inline;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin: 0px 20px;
 }
 
 .navbar-container li a {
