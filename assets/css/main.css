@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap');
 
 * {
     margin: 0;
@@ -6,31 +7,109 @@
 }
 
 header {
-    background-color: #D8C3A5;
-    border-bottom: solid 1px #E85A4F;
+    border-bottom: solid 2px #DA6677;
+    background: #082A35;
 }
 
 .logo-container {
-    padding: 20px;
-}
-
-.nav-bar-container {
     display: flex;
     justify-content: center;
     padding: 20px;
 }
 
-.nav-bar-container li {
-    font-family: 'Montserrat', sans-serif;
-    display: inline;
-    margin-left: 40px;
-}
-
-.nav-bar-container li a {
-    color: #6B6B66;
+.logo-container a {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 50px;
+    color: #8BA0A5;
+    text-shadow: 1px 1px #2A4953;
     text-decoration: none;
 }
 
-.nav-bar-container li a:hover {
+.logo-container a:hover {
+    color: #6b7f86;
+}
+
+div.navbar-container {
+    width: 40%;
+    border-top: solid 1px #FFFFFF;
+    margin: 0px auto;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.navbar-container li {
+    font-family: 'Montserrat', sans-serif;
+    display: inline;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.navbar-container li a {
     color: #FFFFFF;
+    padding: 5px 20px 5px 20px;
+    text-decoration: none;
+}
+
+.navbar-container li a:hover {
+    background-color: #D14437;
+    border-radius: 18px;
+}
+
+#eye-catch {
+    background: #EFEFEF;
+    padding: 20px;
+}
+
+#eye-catch > div {
+    display: flex;
+    align-items: center;
+    padding: 10vh 0px;
+    margin: 0px auto;
+    width: 90%;
+    max-width: 62em;
+}
+
+#eye-catch > div > div {
+    flex-basis: 50%;
+    display: block;
+}
+
+#eye-catch > div > div:nth-of-type(1) {
+    padding-right: 60px;
+}
+
+#eye-catch > div > div:nth-of-type(2) {
+    padding: 50px 0px 50px 60px;
+    border-left: solid 1px #6D6D6D;
+}
+
+.footer-first-lvl {
+    background: #2B4D57;
+    padding: 40px;
+}
+
+.footer-second-lvl {
+    display: block;
+    box-shadow: 0 50vh 0 50vh #6EC4E1;
+    justify-content: center;
+    flex-basis: 50%;
+}
+
+.footer-second-lvl > div > div:nth-of-type(2){
+    float: right;
+}
+
+.footer-second-lvl div div li {
+    Display: inline;
+    font-size: 30px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.footer-second-lvl div div li a {
+    color: #609EB4;
 }
