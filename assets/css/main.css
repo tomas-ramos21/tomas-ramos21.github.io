@@ -45,6 +45,7 @@ div.navbar-container {
     display: flex;
     border-top: solid 1px #FFFFFF;
     justify-content: center;
+    text-align: center;
     padding: 20px 0px;
     margin-top: 15px;
 }
@@ -172,15 +173,6 @@ div.navbar-container {
 }
 
 .footer {
-    display: block;
-    box-shadow: 0 50vh 0 50vh #6EC4E1;
-    justify-content: center;
-    flex-basis: 50%;
-}
-
-.footer div div li {
-    display: inline;
-    font-size: 30px;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-top: auto;
+    border-top: solid 1px #FFFFFF;
 }
