@@ -18,7 +18,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Tomas Ramos
+title: Tomás Ramos
 email: your-email@example.com
 description: >- # this means to ignore newlines until "baseurl:"
   Write an awesome description for your new site here. You can edit this
@@ -28,7 +28,6 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 
 # Build settings
-theme: minima
 plugins:
   - jekyll-feed
 
@@ -51,3 +50,15 @@ plugins:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+
+
+# Personal Information
+full_name: Tomás Aleixo Ramos
+
+# Landing Page
+
+# Social Media
+index_page_github_description: In order find information about my personal coding projects you can check my github. Everything is open-sourced!
+index_page_linkedin_description: If you want to reach out to me for professional reasons or find detailed information about my CV.
+github_profile: https://github.com/tomas-ramos21
+linkedin_profile: https://www.linkedin.com/in/tomas-aleixo-ramos

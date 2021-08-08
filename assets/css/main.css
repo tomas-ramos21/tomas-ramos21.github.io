@@ -13,9 +13,13 @@
     padding: 0;
 }
 
+a {
+    text-decoration: none;
+}
+
 header {
     border-bottom: solid 2px #DA6677;
-    background: #21404B;
+    background: #173e45;
 }
 
 .logo-container {
@@ -63,12 +67,12 @@ div.navbar-container {
 }
 
 .navbar-container li a:hover {
-    background-color: #D14437;
+    background-color: #D46578;
     border-radius: 18px;
 }
 
 #eye-catch {
-    background: #EFEFEF;
+    background: #ededed;
     height: 60vh;
     padding: 20px;
 }
@@ -173,6 +177,40 @@ div.navbar-container {
 }
 
 .footer {
-    margin-top: auto;
-    border-top: solid 1px #FFFFFF;
+    border-top: solid 3px #848484;
+}
+
+.footer > div {
+    display: flex;
+    align-items: center;
+    padding: 1vh 0px;
+    margin: 0px auto;
+    width: 90%;
+    max-width: 62em;
+    color: #676767;
+}
+
+.footer > div > div {
+    flex-basis: 50%;
+    display: block;
+}
+
+.footer > div > div:nth-of-type(1) {
+    padding-right: 60px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 75%;
+}
+
+.footer > div > div:nth-of-type(2) {
+    padding: 0px 0px 0px 60px;
+    text-align: right;
+    text-decoration: none;
+}
+
+.footer .social-buttons {
+    display: inline;
+    padding-left: 20px;
+    font-size: 175%;
+    text-decoration: none;
+    color: #676767;
 }

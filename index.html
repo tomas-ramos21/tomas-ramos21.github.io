@@ -9,7 +9,6 @@
       <p>This is a test.</p>
     </div>
   <div>
-    <a href="">Image</a>
   </div>
   </div>
 </section>
@@ -23,10 +22,10 @@
     <div>
       <div class="social-media-column">
         <i class="fa fa-github"></i>
-        <p>All my open sourced projects are hosted on github. Check them out!</p>
+        <p>{{ site.index_page_github_description }}</p>
       </div>
       <div class="social-media-button">
-        <a href="https://github.com/tomas-ramos21"><i class="fa fa-github-alt"></i> @tomas-ramos21</a>
+        <a href="{{ site.github_profile }}"><i class="fa fa-github-alt"></i> @tomas-ramos21</a>
       </div>
     </div>
   </div>
@@ -34,13 +33,13 @@
     <div>
       <div class="social-media-column">
         <i class="fa fa-linkedin"></i>
-        <p>I mean if what you care about is the CV ... Check this one out.</p>
+        <p>{{ site.index_page_linkedin_description }}</p>
       </div>
       <div class="social-media-button">
-        <a href="https://www.linkedin.com/in/tomas-aleixo-ramos/"><i class="fa fa-briefcase"></i> @tomas-aleixo-ramos</a>
+        <a href="{{ site.linkedin_profile }}"><i class="fa fa-briefcase"></i> @tomas-aleixo-ramos</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- {% include footer.html %} -->
+{% include footer.html %}

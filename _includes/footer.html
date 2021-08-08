@@ -1,7 +1,13 @@
 <footer>
   <section class="footer">
     <div>
-      <p>&copy; Copyright 2021, Tomás Aleixo Ramos</p>
+      <div><p>&copy; {{ 'now' | date: "%Y" }} {{ site.full_name }}. All rights reserved.</p></div>
+      <div>
+        <ul>
+          <a href="{{ site.github_profile }}"><li class="social-buttons"><i class="fa fa-github-square"></i></li></a>
+          <a href="{{ site.linkedin_profile }}"><li class="social-buttons"><i class="fa fa-linkedin-square"></i></li></a>
+        </ul>
+      </div>
     </div>
   </section>
   </footer>
