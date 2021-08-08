@@ -2,11 +2,13 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap'); */
 /* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap'); */
 /* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap'); */
 
 @import url('//fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
 @import url('//fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap');
 @import url('//fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
 @import url('//fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400&display=swap');
+@import url('//fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
 
 * {
     margin: 0;
@@ -72,7 +74,7 @@ div.navbar-container {
 }
 
 #eye-catch {
-    background: #ededed;
+    background: #EDEDED;
     height: 60vh;
     padding: 20px;
 }
@@ -85,6 +87,7 @@ div.navbar-container {
     width: 90%;
     height: 50%;
     max-width: 62em;
+    text-decoration: none;
 }
 
 #eye-catch > div > div {
@@ -99,6 +102,36 @@ div.navbar-container {
 #eye-catch > div > div:nth-of-type(2) {
     padding: 50px 0px 50px 60px;
     border-left: solid 1px #6D6D6D;
+}
+
+#eye-catch > div > div > h1 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 200%;
+    padding: 5px;
+    color: #2C2C2C;
+}
+
+#eye-catch > div > div > p {
+    padding: 5px;
+    line-height: 1.4em;
+    font-size: 110%;
+    font-family: 'Noto Sans', sans-serif;
+    color: #2C2C2C;
+}
+
+#eye-catch > div > div > a {
+    color: #A61200;
+    font-size: 160%;
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+#eye-catch a:hover {
+    opacity: 0.65;
+    transition: opacity 0.5s;
+}
+
+#eye-catch a i {
+    font-size: 80%;
 }
 
 .social-media-header {
