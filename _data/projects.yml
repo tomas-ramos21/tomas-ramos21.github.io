@@ -1,0 +1,18 @@
+
+- name: Donut
+  description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent imperdiet consequat neque, eu aliquam nunc faucibus efficitur. Duis laoreet at nunc in gravida. In molestie convallis odio id maximus. Praesent ullamcorper suscipit odio id suscipit.
+  logo: donut-logo.png
+  emoji: 🍩
+  section_color: beige
+
+- name: Cookie
+  description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent imperdiet consequat neque, eu aliquam nunc faucibus efficitur. Duis laoreet at nunc in gravida. In molestie convallis odio id maximus. Praesent ullamcorper suscipit odio id suscipit.
+  logo: cookie-logo.png
+  emoji: 🍪
+  section_color: blue
+
+- name: Fries
+  description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent imperdiet consequat neque, eu aliquam nunc faucibus efficitur. Duis laoreet at nunc in gravida. In molestie convallis odio id maximus. Praesent ullamcorper suscipit odio id suscipit.
+  logo: fries-logo.png
+  emoji: 🍟
+  section_color: green

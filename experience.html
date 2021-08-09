@@ -1,0 +1,38 @@
+---
+title: Experience
+---
+
+{% include header.html %}
+
+  {% for job in site.data.jobs %}
+    <section id="project-section-{{ job.section_color }}">
+      <div>
+        <div>
+          {% if job.section_color contains "beige" or job.section_color == "red" %}
+            {% if job.company == "Apple" %}
+            <img style="width: 50%;" src="assets/img/{{ job.company_logo }}" alt="" />
+            {% else %}
+            <img src="assets/img/{{ job.company_logo }}" alt="" />
+            {% endif %}
+          {% else %}
+            <h1>{{ job.company }}</h1>
+            <p>{{ job.description }}</p>
+          {% endif %}
+        </div>
+        <div>
+          {% if job.section_color contains "beige" or job.section_color == "red" %}
+          <h1>{{ job.company }}</h1>
+          <p>{{ job.description }}</p>
+          {% else %}
+            {% if job.company == "Apple" %}
+              <img style="width: 50%;" src="assets/img/{{ job.company_logo }}" alt="" />
+            {% else %}
+              <img src="assets/img/{{ job.company_logo }}" alt="" />
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </section>
+  {% endfor %}
+
+{% include footer.html %}

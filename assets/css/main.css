@@ -74,8 +74,7 @@ div.navbar-container {
 }
 
 #eye-catch {
-    background: #EDEDED;
-    height: 60vh;
+    background-color: #EBEBE6;
     padding: 20px;
 }
 
@@ -151,7 +150,7 @@ div.navbar-container {
 }
 
 .social-media {
-    background: #24708c;
+    background: #24708C;
 }
 
 .social-media div {
