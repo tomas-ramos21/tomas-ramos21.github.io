@@ -62,3 +62,4 @@ plugins:
 header_pages:
  - about.md
  - blog.md
+ - experience.md
