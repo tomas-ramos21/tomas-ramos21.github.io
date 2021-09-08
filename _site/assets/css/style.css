@@ -362,11 +362,12 @@ table {
     color: #424242; }
 
 .site-nav {
+  background-color: #455064 !important;
   position: absolute;
   top: 9px;
   right: 15px;
   background-color: #fdfdfd;
-  border: 1px solid #e8e8e8;
+  border: 1px solid #455064 !important;
   border-radius: 5px;
   text-align: right; }
   .site-nav .nav-trigger {
