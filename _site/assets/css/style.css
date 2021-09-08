@@ -372,6 +372,7 @@ table {
   .site-nav .nav-trigger {
     display: none; }
   .site-nav .menu-icon {
+    background-color: #455064 !important;
     float: right;
     width: 36px;
     height: 26px;
