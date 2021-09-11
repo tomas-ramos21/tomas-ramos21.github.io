@@ -11,7 +11,7 @@
       <div class="wrapper">
         {{ content }}
         {% for job in site.data.jobs %}
-        <div align="center">
+        <div align="center" style="padding-top: {{ job.margin }}">
           <img src="{{ job.image }}" alt="drawing" width="{{ job.image-width }}"/>
           <p class="post-title" style="display: block; margin-top: 1em;">{{ job.company }}</p>
         </div>

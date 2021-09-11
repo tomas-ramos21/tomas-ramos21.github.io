@@ -4,6 +4,7 @@
   position: Data Engineer
   tenure: June 2020 until present
   image-width: 125
+  margin: 0em
 
 - company: MobileWalla
   image: /assets/img/mobilewalla_logo.png
@@ -11,6 +12,7 @@
   position: Data Engineer
   tenure: June 2019 to June 2020
   image-width: 150
+  margin: 4em
 
 - company: Utopia
   image: /assets/img/utopia_logo.png
@@ -18,3 +20,4 @@
   position: Data Scientist Intern
   tenure: December 2018 to April 2019
   image-width: 175
+  margin: 4em
