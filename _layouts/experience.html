@@ -12,10 +12,15 @@
         {{ content }}
         {% for job in site.data.jobs %}
         <div align="center">
-          <img src={{ job.image }} alt="drawing" width="200"/>
+          <img src={{ job.image }} alt="drawing" width="{{ job.image-width }}"/>
+          <p class="post-title" style="display: block; margin-top: 1em;">{{ job.company }}</p>
         </div>
         <hr class="solid">
-        {{ job.description }}
+        <ul style="list-style-type: none">
+          <li><strong>Position:</strong> {{ job.position }}</li>
+          <li><strong>Tenure:</strong> {{ job.tenure }}</li>
+        </ul>
+          {{ job.description }}
         {% endfor %}
       </div>
     </main>

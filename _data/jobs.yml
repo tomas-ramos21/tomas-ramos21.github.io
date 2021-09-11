@@ -1,2 +1,6 @@
-- image: https://upload.wikimedia.org/wikipedia/commons/7/74/Apple_logo_dark_grey.svg
+- company: Apple
+  image: https://upload.wikimedia.org/wikipedia/commons/7/74/Apple_logo_dark_grey.svg
   description: Lorem Ipsum dolor
+  position: Data Engineer
+  tenure: June 2020 - Present
+  image-width: 125
