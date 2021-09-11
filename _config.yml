@@ -1,11 +1,11 @@
-title: Your awesome title
+title: Tomás Aleixo Ramos
 author:
-  name: GitHub User
-  email: your-email@domain.com
+  name: Tomás Ramos
+  email: tomas.ramos.foss@gmail.com
 description: > # this means to ignore newlines until "show_excerpts:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+  Personal website where you can find information about me, such as
+  projects I'm working on, professional experience and a opinionated
+  programming blog.
 
 show_excerpts: false # set to true to show excerpts on the homepage
 
@@ -16,14 +16,14 @@ minima:
 
   # generate social links in footer
   social_links:
-    twitter: jekyllrb
-    github:  jekyll
+    twitter: https://twitter.com/TomasAleixo46
+    github: https://github.com/tomas-ramos21
     # devto: jekyll
     # dribbble: jekyll
     # facebook: jekyll
     # flickr:   jekyll
     # instagram: jekyll
-    # linkedin: jekyll
+    linkedin: https://www.linkedin.com/in/tomas-aleixo-ramos
     # pinterest: jekyll
     # youtube: jekyll
     # youtube_channel: UC8CXR0-3I70i1tfPg1PAE1g

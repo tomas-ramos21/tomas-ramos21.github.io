@@ -234,7 +234,7 @@ a {
  * Blockquotes
  */
 blockquote {
-  color: #828282;
+  color: #FFFFFF !important;
   border-left: 4px solid #e8e8e8;
   padding-left: 15px;
   font-size: 1.125rem;
@@ -342,7 +342,7 @@ table {
  * Site header
  */
 .site-header {
-  background-color: #455064 !important;
+  background-color: #24292F !important;
   border-top: 5px solid #424242;
   border-bottom: 1px solid #e8e8e8;
   min-height: 55.95px;
@@ -359,21 +359,21 @@ table {
     .site-title {
       padding-right: 45px; } }
   .site-title, .site-title:visited {
-    color: #424242; }
+    color: #FFFFFF !important; }
 
 .site-nav {
-  background-color: #455064 !important;
+  background-color: #24292F !important;
   position: absolute;
   top: 9px;
   right: 15px;
   background-color: #fdfdfd;
-  border: 1px solid #455064 !important;
+  border: 1px solid #24292F !important;
   border-radius: 5px;
   text-align: right; }
   .site-nav .nav-trigger {
     display: none; }
   .site-nav .menu-icon {
-    background-color: #455064 !important;
+    background-color: #24292F !important;
     float: right;
     width: 36px;
     height: 26px;
@@ -396,7 +396,7 @@ table {
     display: block;
     padding-bottom: 5px; }
   .site-nav .page-link {
-    color: #111111;
+    color: #FFFFFF !important;
     line-height: 1.5;
     display: block;
     padding: 5px 10px;
@@ -426,7 +426,7 @@ table {
  * Site footer
  */
 .site-footer {
-  background-color: #455064 !important;
+  background-color: #24292F !important;
   border-top: 1px solid #e8e8e8;
   padding: 30px 0; }
 
@@ -446,7 +446,7 @@ table {
 .footer-col-wrapper,
 .social-links {
   font-size: 0.9375rem;
-  color: #828282; }
+  color: #FFFFFF !important; }
 
 .footer-col {
   margin-bottom: 15px; }
@@ -501,7 +501,7 @@ table {
 
 .post-meta {
   font-size: 14px;
-  color: #828282; }
+  color: #FFFFFF !important; }
 
 .post-link {
   display: block;
