@@ -16,7 +16,7 @@ minima:
 
   # generate social links in footer
   social_links:
-    twitter: https://twitter.com/TomasAleixo46
+    twitter: TomasAleixo46
     github: https://github.com/tomas-ramos21
     # devto: jekyll
     # dribbble: jekyll
