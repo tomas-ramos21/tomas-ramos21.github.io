@@ -1,6 +1,20 @@
 - company: Apple
-  image: https://upload.wikimedia.org/wikipedia/commons/7/74/Apple_logo_dark_grey.svg
+  image: /assets/img/apple_logo.svg
   description: Lorem Ipsum dolor
   position: Data Engineer
-  tenure: June 2020 - Present
+  tenure: June 2020 until present
   image-width: 125
+
+- company: MobileWalla
+  image: /assets/img/mobilewalla_logo.png
+  description: Lorem Ipsum dolor
+  position: Data Engineer
+  tenure: June 2019 to June 2020
+  image-width: 150
+
+- company: Utopia
+  image: /assets/img/utopia_logo.png
+  description: Lorem Ipsum dolor
+  position: Data Scientist Intern
+  tenure: December 2018 to April 2019
+  image-width: 175
