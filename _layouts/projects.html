@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+  {%- include head.html -%}
+
+  <body>
+
+    {%- include header.html -%}
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        {{ content }}
+        {% for proj in site.data.projects %}
+        <div align="center" style="padding-top: {{ proj.margin }}">
+          <a href="{{ proj.link }}">
+            <img src="{{ proj.image }}" width="{{ proj.image-width }}"/>
+          </a>
+          <p class="post-title" style="display: block; margin-top: 1em;">{{ proj.name }}</p>
+        </div>
+        <hr class="solid">
+          {{ proj.description | replace: "\n", "<br><br>" }}
+        {% endfor %}
+      </div>
+    </main>
+
+    {%- include footer.html -%}
+
+  </body>
+
+</html>

@@ -1,0 +1,20 @@
+- name: Donut
+  image: /assets/img/donut_logo.png
+  description: Lorem Ipsum dolor
+  image-width: 200
+  margin: 4em
+  link: https://github.com/tomas-ramos21/Donut
+
+- name: Cookie
+  image: /assets/img/cookie_logo.png
+  description: Lorem Ipsum dolor
+  image-width: 250
+  margin: 4em
+  link: https://github.com/tomas-ramos21/Cookie
+
+- name: Fries
+  image: /assets/img/fries_logo.png
+  description: Lorem Ipsum dolor
+  image-width: 175
+  margin: 4em
+  link: https://github.com/tomas-ramos21/Fries

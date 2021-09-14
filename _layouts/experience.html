@@ -12,7 +12,9 @@
         {{ content }}
         {% for job in site.data.jobs %}
         <div align="center" style="padding-top: {{ job.margin }}">
-          <img src="{{ job.image }}" alt="drawing" width="{{ job.image-width }}"/>
+          <a href="{{ job.link }}">
+            <img src="{{ job.image }}" width="{{ job.image-width }}"/>
+          </a>
           <p class="post-title" style="display: block; margin-top: 1em;">{{ job.company }}</p>
         </div>
         <hr class="solid">
@@ -20,7 +22,7 @@
           <li><strong>Position:</strong> {{ job.position }}</li>
           <li><strong>Tenure:</strong> {{ job.tenure }}</li>
         </ul>
-          {{ job.description }}
+          {{ job.description | replace: "\n", "<br><br>" }}
         {% endfor %}
       </div>
     </main>
