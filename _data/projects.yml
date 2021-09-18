@@ -5,7 +5,7 @@
    is then spread over several nodes (i.e. Computers). It's meant to be a extremely fast and
    lightweight option compared to a distributed file systems (e.g Hadoop). But still provide
    you the essential functionalities to manage the data comfortably and colaborate with other
-   developers. Donut it's still going to the initial stages of development.
+   developers. Donut is still going through it's initial development stages.
   image-width: 200
   margin: 4em
   link: https://github.com/tomas-ramos21/Donut
@@ -18,7 +18,7 @@
    the nodes of a distributed dataset. This achieved by allowing the developer to use a low-level
    language (i.e. C) to obtain every bit of performance from the target node, and it's CPU. All
    this while providing basic constructs to speed-up developemnt such as SQL joins across all the
-   running nodes.
+   running nodes. Cookie is still going through it's initial development stages.
   image-width: 250
   margin: 4em
   link: https://github.com/tomas-ramos21/Cookie
