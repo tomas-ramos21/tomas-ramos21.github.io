@@ -18,7 +18,9 @@
           <p class="post-title" style="display: block; margin-top: 1em;">{{ proj.name }}</p>
         </div>
         <hr class="solid">
-          {{ proj.description | replace: "\n", "<br><br>" }}
+          <div style="text-align: justify; text-justify: inter-word">
+            {{ proj.description | replace: "\n", "<br><br>" }}
+          </div>
         {% endfor %}
       </div>
     </main>

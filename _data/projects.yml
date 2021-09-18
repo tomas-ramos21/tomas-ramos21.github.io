@@ -1,20 +1,35 @@
 - name: Donut
   image: /assets/img/donut_logo.png
-  description: Lorem Ipsum dolor
+  description: |
+   Donut is meant to be a data distributed repository. Which means you can check-in data which
+   is then spread over several nodes (i.e. Computers). It's meant to be a extremely fast and
+   lightweight option compared to a distributed file systems (e.g Hadoop). But still provide
+   you the essential functionalities to manage the data comfortably and colaborate with other
+   developers. Donut it's still going to the initial stages of development.
   image-width: 200
   margin: 4em
   link: https://github.com/tomas-ramos21/Donut
 
 - name: Cookie
   image: /assets/img/cookie_logo.png
-  description: Lorem Ipsum dolor
+  description: |
+   Cookie is meant to be a very fast distributed computational framework, which operates on top
+   of Donut. It's purpose is to allow the user write data processing jobs which are run in all
+   the nodes of a distributed dataset. This achieved by allowing the developer to use a low-level
+   language (i.e. C) to obtain every bit of performance from the target node, and it's CPU. All
+   this while providing basic constructs to speed-up developemnt such as SQL joins across all the
+   running nodes.
   image-width: 250
   margin: 4em
   link: https://github.com/tomas-ramos21/Cookie
 
 - name: Fries
   image: /assets/img/fries_logo.png
-  description: Lorem Ipsum dolor
+  description: |
+   Fries is a small commodity tool I developed to inspect Java Byte-Code resultant from Scala
+   and Java classes. It's an Emacs package which disassembles the JAR file and displays the byte-code
+   of a class to the user. This allows to inspect the performance of the code written and make
+   development decisions quicker.
   image-width: 175
   margin: 4em
   link: https://github.com/tomas-ramos21/Fries
