@@ -1,11 +1,12 @@
 - company: Apple
   image: /assets/img/apple_logo.svg
   description: |
-    At Apple I'm responsible for developing, maintaining, improving Scala and Spark code which is used to
-    provide statistical insights over large amounts of data from Apple's media products (e.g. App Store)
-    through data pipelines.\n These are used to conduct experimentation that drive the decision-making of
-    Engineering and Product teams regarding potential new features.
+    At Apple I'm responsible for developing, maintaining, and improving data pipelines which are used to
+    provide statistical insights over large amounts of data from Apple's media products. This done by conducting
+    experiments that drive the decision-making of the Engineering and Product teams regarding potential new
+    features and algorithms. This done using Scala, Spark, and Hadoop.
   position: Data Engineer
+  location: Singapore
   tenure: June 2020 until present
   image-width: 125
   margin: 0em
@@ -13,8 +14,13 @@
 
 - company: MobileWalla
   image: /assets/img/mobilewalla_logo.png
-  description: Lorem Ipsum dolor
+  description: |
+    MobileWalla is an audience profiling company, which leverages big data to create custom segments that can
+    be used for targeted advertising. During my time there I was responsible for building pipelines that would
+    process these segments and then deliver them to clients. This was achieved using Scala, Java, Spark and AWS
+    EC2 clusters.
   position: Data Engineer
+  location: Singapore
   tenure: June 2019 to June 2020
   image-width: 150
   margin: 4em
@@ -22,8 +28,13 @@
 
 - company: Utopia
   image: /assets/img/utopia_logo.png
-  description: Lorem Ipsum dolor
+  description: |
+    Utopia is a company that provides services in data quality, migration, and governance solutions by developing
+    extensions to SAP's software. At Utopia I worked as part of the R&D team to develop a new set of software tools
+    using Machine Learning and Artificial Intelligence, with the intent of extracting and cleaning data from scanned
+    documents as well as photos.
   position: Data Scientist Intern
+  location: Singapore & India
   tenure: December 2018 to April 2019
   image-width: 175
   margin: 4em
