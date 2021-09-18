@@ -3,9 +3,8 @@ author:
   name: Tomás Ramos
   email: tomas.ramos.foss@gmail.com
 description: > # this means to ignore newlines until "show_excerpts:"
-  This is a personal website where you can find information about me,
-  such as projects I'm working on, professional experience and an
-  opinionated programming blog.
+  Find information about me, such as projects I'm working on, professional
+  experience and an opinionated programming blog.
 
 show_excerpts: false # set to true to show excerpts on the homepage
 
