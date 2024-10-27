@@ -1,0 +1,545 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="/theme/stylesheet/style.min.css">
+
+    <link id="dark-theme-style" rel="stylesheet" type="text/css"
+    href="/theme/stylesheet/dark-theme.min.css">
+
+    <link id="pygments-dark-theme" rel="stylesheet" type="text/css"
+          href="/theme/pygments/dracula.min.css">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/solid.css">
+
+
+
+
+
+
+
+ 
+
+<meta name="author" content="Tomas Aleixo Ramos" />
+<meta name="description" content="The article explores Functional Data Analysis as an alternative to data aggregation and bucketing, emphasizing its value in preserving data detail by representing information as curves rather than single points. It further demonstrates how FDA can be integrated into machine learning, such as Neural Networks, for better insight and classification accuracy." />
+<meta name="keywords" content="">
+
+
+  <meta property="og:site_name" content="Bytes & Bites"/>
+  <meta property="og:title" content="Functional Neural Networks"/>
+  <meta property="og:description" content="The article explores Functional Data Analysis as an alternative to data aggregation and bucketing, emphasizing its value in preserving data detail by representing information as curves rather than single points. It further demonstrates how FDA can be integrated into machine learning, such as Neural Networks, for better insight and classification accuracy."/>
+  <meta property="og:locale" content="en_US"/>
+  <meta property="og:url" content="/2024/functional-neural-networks.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="article:published_time" content="2024-07-13 10:02:00+08:00"/>
+  <meta property="article:modified_time" content=""/>
+  <meta property="article:author" content="/author/tomas-aleixo-ramos.html">
+  <meta property="article:section" content="articles"/>
+  <meta property="og:image" content="">
+
+  <title>Bytes & Bites &ndash; Functional Neural Networks</title>
+
+
+</head>
+<body class="dark-theme">
+
+<aside>
+  <div>
+    <a href="/">
+      <img src="/theme/img/profile.jpeg" alt="Tomás Aleixo Ramos" title="Tomás Aleixo Ramos">
+    </a>
+
+    <h1>
+      <a href="/">Tomás Aleixo Ramos</a>
+    </h1>
+
+    <p>Data Science & Engineering</p>
+
+
+
+    <ul class="social">
+      <li>
+        <a class="sc-linkedin"
+           href="https://www.linkedin.com/in/tomas-aleixo-ramos/"
+           target="_blank">
+          <i class="fa-brands fa-linkedin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="sc-github"
+           href="https://github.com/tomas-ramos21"
+           target="_blank">
+          <i class="fa-brands fa-github"></i>
+        </a>
+      </li>
+      <li>
+        <a class="sc-twitter"
+           href="https://twitter.com/TomasAleixo46"
+           target="_blank">
+          <i class="fa-brands fa-twitter"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+</aside>
+  <main>
+
+<nav>
+  <a href="/">Home</a>
+
+  <a href="/about/">About</a>
+  <a href="/projects/">Projects</a>
+  <a href="/tags/">Tags</a>
+
+
+</nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="functional-neural-networks">Functional Neural Networks</h1>
+    <p>
+      Posted on Sat 13 July 2024 in <a href="/category/articles.html">articles</a>
+
+    </p>
+  </header>
+
+
+  <div>
+    <p>After spending several years in the data industry, there's one trend that has consistently stood out to me: the heavy reliance on data aggregation, often leads to information being lost in the process. From A/B testing to high-level metrics and model features, data is commonly distilled into summaries that, while simplifying, can also obscure valuable details. In this article, I aim to highlight an alternative approach—Functional Data Analysis <em>(FDA)</em>. While not applicable for every case, it is particularly relevant for scenarios where a metric is tracked over time, distance, or other measurements.</p>
+<p>FDA treats each 'unit of information' as a curve, not a single number. I'm including a few good examples of functional data below. Here you have temperatures tracked through time for several days in Adelaide, Australia. Each line represents a unique unit of information!</p>
+<div class="figure align-center">
+<object data="../images/temperature_example_plot.svg" style="width: 100%;" type="image/svg+xml"></object>
+</div>
+<p>Why is functional data important? Consider comparing growth rates between boys and girls, tracking monthly cumulative spending by customers in the App Store, or analyzing how Spotify users listening time builds over the week. Summarizing these with a single number can obscure insights, and bucketing data into broad categories, like days of the week, risks oversimplification. However, when plotted as curves, trends and behaviors become clearer—even to non-technical stakeholders. For example - when does electricity demand rise, and to what scale? Are there any ritualistic habits during particular seasons? FDA reveals these insights, making behaviors easier to explore.</p>
+<p>Consider seasonal electricity demand in Adelaide: during winter, demand spikes in the evenings for heating, while in summer, it rises during the hottest daytime hours for cooling. However, during the early morning <em>(3AM to 6AM)</em> there is a higher electricity demand during summer. A simple example, but one that illustrates the value of FDA in uncovering meaningful patterns.</p>
+<div class="figure align-center">
+<object data="../images/average_electricity_plot.svg" style="width: 100%;" type="image/svg+xml"></object>
+</div>
+<p>Unfortunately, most models in the industry don’t handle 'curves' well. That's why I want to show you how to build a Neural Network that can learn from curves, rather than just making use of scalar features.</p>
+<div class="section" id="learning-from-curves">
+<h2>Learning from Curves</h2>
+<p>Functional data is often stored in discrete form, such as temperature measurements taken every 30 minutes. To apply FDA, we convert discrete data to its functional form using 'basis expansion'. This process estimates coefficients <span class="math">\(c_m\)</span> and multiplies them by a respective basis function <span class="math">\(\phi_m(t)\)</span>, producing a smooth curve where &quot;<span class="math">\(t\)</span>&quot; represents a variable like time or distance. The <span class="math">\(M\)</span> denotes the number of basis functions used.</p>
+<div class="math">
+\begin{equation*}
+x(t) = \sum_{m=1}^M c_m \; \phi_m(t)
+\end{equation*}
+</div>
+<p>Since we are working with functional data, we replace scalar values <em>(like</em> <span class="math">\(x_k\)</span> <em>)</em> with a function <span class="math">\(x_k(t)\)</span>. Additionally, given we are now dealing with functions, our weights must also be functions, leading to the following representation for the Functional Neural Network <em>(FNN)</em>:</p>
+<div class="math">
+\begin{equation*}
+v_n = g \left(  \int_{\mathbb{T}} \beta_{nk}(t) \; x_{k}(t) \; dt + b_n \right)
+\end{equation*}
+</div>
+<p>In this equation, <span class="math">\(v_n\)</span> represents neuron <span class="math">\(n\)</span>, <span class="math">\(g(.)\)</span> denotes the activation function, <span class="math">\(b_n\)</span> is the neuron's bias term, and <span class="math">\(\beta_{nk}(t)\)</span> is the functional weight for the functional variable <span class="math">\(k\)</span>. These weights are represented by basis function coefficients <span class="math">\(c_{nmk}\)</span> with a linear combination of basis functions <span class="math">\(\phi_{nmk}(t)\)</span>:</p>
+<div class="math">
+\begin{equation*}
+v_n = g \left(  \int_{\mathbb{T}} \sum^{M}_{m=1} c_{nmk} \; \phi_{nmk}(t) \; x_k(t) \; dt + b_n \right)
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+\; = g \left(  \sum^{M}_{m=1} c_{nmk} \int_{\mathbb{T}} \phi_{nmk}(t) \; x_k(t) \; dt + b_n \right)
+\end{equation*}
+</div>
+<p>The neural network learns <span class="math">\(c_{nmk}\)</span> to represent these functional weights. If there are also scalar features, the network can incorporate them by adding the standard <span class="math">\(Wx\)</span> form:</p>
+<div class="math">
+\begin{equation*}
+v_n = g \left(  \sum^{M}_{m=1} c_{nmk} \int_{\mathbb{T}} \phi_{nmk}(t) \; x_k(t) \; dt + \sum_{j=1}^J w_{jn} x_j + b_n \right)
+\end{equation*}
+</div>
+<p>Through integration, the neural network learns <span class="math">\(c\)</span>, allowing us to interpret the importance it assigns to different values of <span class="math">\(t\)</span>.</p>
+</div>
+<div class="section" id="building-a-functional-neural-network">
+<h2>Building a Functional Neural Network</h2>
+<p>Let’s dive into a practical example. We’re working with two functional features: temperature <em>(in Celsius)</em> and electricity consumption <em>(in kilowatts)</em>, each measured every 30 minutes in Adelaide, Australia. The objective? To classify the season based on these features. While distinguishing winter from summer is straightforward, spring and autumn are more challenging due to their similar patterns. Don’t believe it? Just look at the average daily temperature curves per season. Even in electricity demand, summer and winter stand out more clearly, as we saw earlier.</p>
+<div class="figure align-center">
+<object data="../images/average_temperature_plot.svg" style="width: 100%;" type="image/svg+xml"></object>
+</div>
+<p>To provide a basis for comparison, I trained a standard Multi-Layer Perceptron Classifier <em>(MLPC)</em>, Random Forest, and Gradient Boosted Trees using the discrete data—48 points each for temperature and electricity. The accuracies achieved were:</p>
+<ol class="arabic simple">
+<li><strong>MLPC:</strong> 49%</li>
+<li><strong>Random Forest:</strong> 75%</li>
+<li><strong>Gradient Boosted Tree:</strong> 82%</li>
+</ol>
+<p>With the Functional Neural Network <em>(FNN)</em>, we use coefficients from the basis expansion rather than raw data. I selected 5 basis functions per variable, creating just 10 inputs instead of 96. These coefficients allow us to generate a smoother curve of 100 discrete points, providing a better integral estimate. Below is a high-level look at the FNN’s architecture:</p>
+<div class="figure align-center">
+<object data="../images/NN_1.svg" style="width: 50.0%;" type="image/svg+xml"></object>
+<p class="caption">Functional Neural Network Architecture</p>
+</div>
+<p>The confusion matrix below shows the results obtained over the test set, resulting in an accuracy of 70%. While this is lower than the Random Forest and Gradient Boosted Trees, it’s a solid starting point, especially given the reduced input size.</p>
+<table style="width: 60%; margin: auto; text-align: center; border-collapse: collapse; font-family: Arial, sans-serif; color: #bcc1cc;">
+   <caption style="font-weight: bold; padding: 10px;">FNN Confusion Matrix</caption>
+   <thead>
+      <tr>
+         <th style="padding: 10px; border: 1px solid #bcc1cc;">Predicted</th>
+         <th style="padding: 10px; border: 1px solid #bcc1cc;">Spring</th>
+         <th style="padding: 10px; border: 1px solid #bcc1cc;">Summer</th>
+         <th style="padding: 10px; border: 1px solid #bcc1cc;">Autumn</th>
+         <th style="padding: 10px; border: 1px solid #bcc1cc;">Winter</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <th style="padding: 10px; border: 1px solid #bcc1cc; font-weight: bold;">Spring</th>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #4b6a8e;">48</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #314158;">19</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2d3b51;">16</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #222a3c;">6</td>
+      </tr>
+      <tr>
+         <th style="padding: 10px; border: 1px solid #bcc1cc; font-weight: bold;">Summer</th>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #1f2633;">4</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #4b6a8e;">83</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #232b3d;">8</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2A2C32;">0</td>
+      </tr>
+      <tr>
+         <th style="padding: 10px; border: 1px solid #bcc1cc; font-weight: bold;">Autumn</th>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2f4053;">14</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2d3c51;">13</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #4b6a8e;">49</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2f4053;">14</td>
+      </tr>
+      <tr>
+         <th style="padding: 10px; border: 1px solid #bcc1cc; font-weight: bold;">Winter</th>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #232b3d;">8</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2A2C32;">0</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #222a3c;">6</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #4b6a8e;">75</td>
+      </tr>
+   </tbody>
+</table><p>Curious about the code? A snippet is provided below, and the full example is available on my <a class="reference external" href="https://github.com/tomas-ramos21/FNN">GitHub</a> for those ready to dive deeper.</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.optim</span> <span class="k">as</span> <span class="nn">optim</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+
+<span class="k">class</span> <span class="nc">FunctionalLayer</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">support</span><span class="p">,</span> <span class="n">basis_fn_cnt</span><span class="p">):</span>
+       <span class="nb">super</span><span class="p">(</span><span class="n">FunctionalLayer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+       <span class="c1"># Grid for the support T (e.g., hours)</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">support</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">support</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">100</span><span class="p">)</span>
+       <span class="c1"># Functional Object Basis Matrix</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+       <span class="c1"># Φ Matrix</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">S</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+       <span class="c1"># We don&#39;t need gradients for the splines</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">S</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+       <span class="c1"># Obtain x(t)</span>
+       <span class="n">functional_data</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+       <span class="c1"># Φ(t) • x(t)</span>
+       <span class="n">S</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">S</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+       <span class="n">integrand</span> <span class="o">=</span> <span class="n">S</span> <span class="o">*</span> <span class="n">functional_data</span>
+       <span class="c1"># Approximate Integral</span>
+       <span class="n">integral</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">integrand</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+       <span class="k">return</span> <span class="n">integral</span>
+
+<span class="k">class</span> <span class="nc">FNN</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">temp_basis_matrix</span><span class="p">,</span> <span class="n">beta_mat_temp</span><span class="p">,</span> <span class="n">temp_ranges</span><span class="p">,</span>
+                <span class="n">elect_basis_matrix</span><span class="p">,</span> <span class="n">beta_mat_elect</span><span class="p">,</span> <span class="n">elect_ranges</span><span class="p">,</span> <span class="n">basis_fn_cnt</span><span class="p">):</span>
+       <span class="nb">super</span><span class="p">(</span><span class="n">FNN</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+       <span class="c1"># Functional sections, which estimate the integrals</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">temp_layer</span> <span class="o">=</span> <span class="n">FunctionalLayer</span><span class="p">(</span><span class="n">temp_basis_matrix</span><span class="p">,</span> <span class="n">beta_mat_temp</span><span class="p">,</span> <span class="n">temp_ranges</span><span class="p">,</span> <span class="n">basis_fn_cnt</span><span class="p">)</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">elect_layer</span> <span class="o">=</span> <span class="n">FunctionalLayer</span><span class="p">(</span><span class="n">elect_basis_matrix</span><span class="p">,</span> <span class="n">beta_mat_elect</span><span class="p">,</span> <span class="n">elect_ranges</span><span class="p">,</span> <span class="n">basis_fn_cnt</span><span class="p">)</span>
+
+       <span class="c1"># Feed Forward Section &amp; it&#39;s Norm</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">48</span><span class="p">)</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">fc_norm_1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="mi">48</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">elementwise_affine</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+       <span class="c1"># Add dropout for the Feed Forward training</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.20</span><span class="p">)</span>
+       <span class="c1"># Output Layer</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">48</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>   <span class="c1"># Output layer</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+       <span class="c1"># Process in set of Functional Coefficients to obtain integrals</span>
+       <span class="n">temp_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_layer</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
+       <span class="n">elect_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elect_layer</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
+
+       <span class="c1"># Concatenate the Integrals</span>
+       <span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">temp_res</span><span class="p">,</span> <span class="n">elect_res</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+       <span class="c1"># Standardize it</span>
+       <span class="n">mean</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+       <span class="n">std</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+       <span class="n">X</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span>
+
+       <span class="c1"># Pass through Feed Forward</span>
+       <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+       <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc_norm_1</span><span class="p">(</span><span class="n">X</span><span class="p">)))</span>
+
+       <span class="c1"># Output layer</span>
+       <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="improving-the-model-with-derivatives">
+<h2>Improving the Model with Derivatives</h2>
+<p>One major advantage of FDA is the ability to analyze derivatives of any order after converting data into functional objects. This allows us to create new features that capture changes in our functional variables over time, enhancing our model’s learning potential. During exploratory data analysis, I discovered a significant difference in the second derivatives <em>(acceleration)</em> of temperature between spring and autumn. As shown below, a noticeable gap appears between 12 PM and 2 PM.</p>
+<div class="figure align-center">
+<object data="../images/average_derivative_temperature_plot.svg" style="width: 100%;" type="image/svg+xml"></object>
+</div>
+<p>To improve model performance, I added the coefficients of the temperature and electricity consumption derivatives. By incorporating these new features into the FNN, accuracy rose to 73%. However, this still fell short of the Gradient Boosted Tree model's performance.</p>
+<table style="width: 60%; margin: auto; text-align: center; border-collapse: collapse; font-family: Arial, sans-serif; color: #bcc1cc;">
+   <caption style="font-weight: bold; padding: 10px;">FNN Confusion Matrix with Derivatives</caption>
+   <thead>
+      <tr>
+         <th style="padding: 10px; border: 1px solid #bcc1cc;">Predicted</th>
+         <th style="padding: 10px; border: 1px solid #bcc1cc;">Spring</th>
+         <th style="padding: 10px; border: 1px solid #bcc1cc;">Summer</th>
+         <th style="padding: 10px; border: 1px solid #bcc1cc;">Autumn</th>
+         <th style="padding: 10px; border: 1px solid #bcc1cc;">Winter</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <th style="padding: 10px; border: 1px solid #bcc1cc; font-weight: bold;">Spring</th>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #4b6a8e;">49</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2f414c;">19</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2b3b46;">11</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #273541;">10</td>
+      </tr>
+      <tr>
+         <th style="padding: 10px; border: 1px solid #bcc1cc; font-weight: bold;">Summer</th>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #23272b;">2</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #4b6a8e;">83</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #212428;">4</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2A2C32;">0</td>
+      </tr>
+      <tr>
+         <th style="padding: 10px; border: 1px solid #bcc1cc; font-weight: bold;">Autumn</th>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #273541;">10</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2b3b46;">11</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #4b6a8e;">53</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2f414c;">16</td>
+      </tr>
+      <tr>
+         <th style="padding: 10px; border: 1px solid #bcc1cc; font-weight: bold;">Winter</th>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #212428;">7</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2A2C32;">0</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #212428;">7</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #4b6a8e;">75</td>
+      </tr>
+   </tbody>
+</table></div>
+<div class="section" id="introducing-latent-factors">
+<h2>Introducing Latent Factors</h2>
+<p>I suspected there was shared information between electricity demand and temperature, so I introduced latent factors into the model. Using a shared matrix, I mapped the electricity and temperature curves into a lower-dimensional space via <span class="math">\(\Gamma\)</span>, capturing their common features. Then, each of these transformed vectors <em>(i.e.,</em> <span class="math">\(\eta\)</span> <em>below)</em> per functional variable are multiplied by a variable-specific matrix <em>(denoted by</em> <span class="math">\(\Lambda^{(k)}\)</span> <em>)</em>, transforming it into another set of coefficients <em>(</em> <span class="math">\(\beta^{(k)}\)</span> <em>)</em> that will be used to generate Latent Functional Factors.</p>
+<div class="math">
+\begin{equation*}
+\eta^{(k)}_{i} = \Gamma x^{(k)}_{i} + \epsilon
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+\beta^{(k)}_{i} = \Lambda^{(k)} \eta^{(k)}_{i} + \delta^{(k)}
+\end{equation*}
+</div>
+<p>This transformation allows us to capitalize on shared latent factors that both input curves share, enabling us to extract even more information from our data. This addition to our FNN changes its architecture to the following:</p>
+<div class="figure align-center">
+<object data="../images/NN_2.svg" style="width: 60.0%;" type="image/svg+xml"></object>
+<p class="caption">Functional Neural Network Architecture with Latent Factors</p>
+</div>
+<p>This approach improved our accuracy to 90%—a solid jump from 73% which surpasses the Gradient Boosted model. The confusion matrix is given below:</p>
+<table style="width: 60%; margin: auto; text-align: center; border-collapse: collapse; font-family: Arial, sans-serif; color: #bcc1cc;">
+   <caption style="font-weight: bold; padding: 10px;">FNN Confusion Matrix with Latent Factors</caption>
+   <thead>
+      <tr>
+         <th style="padding: 10px; border: 1px solid #bcc1cc;">Predicted</th>
+         <th style="padding: 10px; border: 1px solid #bcc1cc;">Spring</th>
+         <th style="padding: 10px; border: 1px solid #bcc1cc;">Summer</th>
+         <th style="padding: 10px; border: 1px solid #bcc1cc;">Autumn</th>
+         <th style="padding: 10px; border: 1px solid #bcc1cc;">Winter</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <th style="padding: 10px; border: 1px solid #bcc1cc; font-weight: bold;">Spring</th>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #4b6a8e;">75</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #273541;">7</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #1f2633;">4</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #1f2633;">3</td>
+      </tr>
+      <tr>
+         <th style="padding: 10px; border: 1px solid #bcc1cc; font-weight: bold;">Summer</th>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #1f2633;">2</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #4b6a8e;">82</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #273541;">5</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2A2C32;">0</td>
+      </tr>
+      <tr>
+         <th style="padding: 10px; border: 1px solid #bcc1cc; font-weight: bold;">Autumn</th>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #1f2633;">5</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2A2C32;">0</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #4b6a8e;">75</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #273541;">10</td>
+      </tr>
+      <tr>
+         <th style="padding: 10px; border: 1px solid #bcc1cc; font-weight: bold;">Winter</th>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #1f2633;">1</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2A2C32;">0</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2A2C32;">0</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #4b6a8e;">88</td>
+      </tr>
+   </tbody>
+</table><p>The PyTorch &quot;forward&quot; function is changed to:</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="c1"># Latent Factor Transformation</span>
+    <span class="n">latent_temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
+    <span class="n">latent_elect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
+    <span class="n">latent_temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_temp</span><span class="p">(</span><span class="n">latent_temp</span><span class="p">)</span>
+    <span class="n">latent_elect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_elect</span><span class="p">(</span><span class="n">latent_elect</span><span class="p">)</span>
+
+    <span class="c1"># Process set of Functional Coefficients to obtain integrals</span>
+    <span class="n">temp_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_layer</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
+    <span class="n">elect_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elect_layer</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
+    <span class="n">temp_acc_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_acc_layer</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
+    <span class="n">elect_acc_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elect_acc_layer</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
+    <span class="n">latent_temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_temp_layer</span><span class="p">(</span><span class="n">latent_temp</span><span class="p">)</span>
+    <span class="n">latent_elect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_elect_layer</span><span class="p">(</span><span class="n">latent_elect</span><span class="p">)</span>
+
+    <span class="c1"># Concatenate the Integrals</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">temp_res</span><span class="p">,</span> <span class="n">elect_res</span><span class="p">,</span> <span class="n">temp_acc_res</span><span class="p">,</span> <span class="n">elect_acc_res</span><span class="p">,</span> <span class="n">latent_temp</span><span class="p">,</span> <span class="n">latent_elect</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Standardize it</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">std</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span>
+
+    <span class="c1"># Pass through Feed Forward</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout_1</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc_norm_1</span><span class="p">(</span><span class="n">X</span><span class="p">)))</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout_2</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc_norm_2</span><span class="p">(</span><span class="n">X</span><span class="p">)))</span>
+
+    <span class="c1"># Output layer</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="the-potential-of-fnns">
+<h2>The Potential of FNNs</h2>
+<p>FNNs are powerful not just for receiving curves as inputs but also for predicting. For instance, you could predict the cumulative number of iPhones needing repair during the first six months after launch and then analyze the derivatives of the output curve for better operational planning. With generative AI, FNNs should also be able to create realistic scenarios, like simulating seasonally adjusted electricity demand across new locations or predicting customer behavior patterns, which can be invaluable for planning and decision making. However, GenAI for FNNs is something I'm still exploring, maybe for a future article!</p>
+<p>I hope this article sparks your curiosity about FDA. It’s an underutilized yet highly valuable tool in the Data Science world, one that can provide richer insights and more interpretable models. If you're interested in learning more, you can find the code I used for this example on my <a class="reference external" href="https://github.com/tomas-ramos21/FNN">GitHub</a>.</p>
+</div>
+<script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+  <div class="tag-cloud">
+    <p>
+    </p>
+  </div>
+
+
+
+
+
+
+</article>
+
+<footer>
+<p>
+  &copy;   - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.en_US" target="_blank">Creative Commons Attribution-ShareAlike</a>
+</p>
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by-sa/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+           src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p></footer>  </main>
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " Bytes & Bites ",
+  "url" : "",
+  "image": "",
+  "description": ""
+}
+</script>
+</body>
+</html>
