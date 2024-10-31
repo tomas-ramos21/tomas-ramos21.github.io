@@ -124,7 +124,7 @@
 
   <div>
     <p>After spending several years in the data industry, there's one trend that has consistently stood out to me: the heavy reliance on data aggregation, often leads to information being lost in the process. From A/B testing to high-level metrics and model features, data is commonly distilled into summaries that, while simplifying, can also obscure valuable details. In this article, I aim to highlight an alternative approach—Functional Data Analysis <em>(FDA)</em>. While not applicable for every case, it is particularly relevant for scenarios where a metric is tracked over time, distance, or other measurements.</p>
-<p>FDA treats each 'unit of information' as a curve, not a single number. I'm including a few good examples of functional data below. Here you have temperatures tracked through time for several days in Adelaide, Australia. Each line represents a unique unit of information!</p>
+<p>FDA treats each &quot;unit of information&quot; as a curve, not a single number. I'm including a few good examples of functional data below. Here you have temperatures tracked through time for several days in Adelaide, Australia. Each line represents a unique unit of information!</p>
 <div class="figure align-center">
 <object data="../images/temperature_example_plot.svg" style="width: 100%;" type="image/svg+xml"></object>
 </div>
@@ -179,7 +179,7 @@ v_n = g \left(  \sum^{M}_{m=1} c_{nmk} \int_{\mathbb{T}} \phi_{nmk}(t) \; x_k(t)
 <li><strong>Random Forest:</strong> 75%</li>
 <li><strong>Gradient Boosted Tree:</strong> 82%</li>
 </ol>
-<p>With the Functional Neural Network <em>(FNN)</em>, we use coefficients from the basis expansion rather than raw data. I selected 5 basis functions per variable, creating just 10 inputs instead of 96. These coefficients allow us to generate a smoother curve of 100 discrete points, providing a better integral estimate. Below is a high-level look at the FNN’s architecture:</p>
+<p>With the Functional Neural Network <em>(FNN)</em>, we use coefficients from the basis expansion rather than raw data. I selected 5 basis functions per variable, creating just 10 inputs instead of 96. The coefficients allow us to generate a smoother curve of 100 discrete points, providing a better integral estimate than the initial 48. Below is a high-level look at the FNN’s architecture, in this case we are not using scalar features, hence the dotted arrow.</p>
 <div class="figure align-center">
 <object data="../images/NN_1.svg" style="width: 50.0%;" type="image/svg+xml"></object>
 <p class="caption">Functional Neural Network Architecture</p>
@@ -344,7 +344,7 @@ v_n = g \left(  \sum^{M}_{m=1} c_{nmk} \int_{\mathbb{T}} \phi_{nmk}(t) \; x_k(t)
 </table></div>
 <div class="section" id="introducing-latent-factors">
 <h2>Introducing Latent Factors</h2>
-<p>I suspected there was shared information between electricity demand and temperature, so I introduced latent factors into the model. Using a shared matrix, I mapped the electricity and temperature curves into a lower-dimensional space via <span class="math">\(\Gamma\)</span>, capturing their common features. Then, each of these transformed vectors <em>(i.e.,</em> <span class="math">\(\eta\)</span> <em>below)</em> per functional variable are multiplied by a variable-specific matrix <em>(denoted by</em> <span class="math">\(\Lambda^{(k)}\)</span> <em>)</em>, transforming it into another set of coefficients <em>(</em> <span class="math">\(\beta^{(k)}\)</span> <em>)</em> that will be used to generate Latent Functional Factors.</p>
+<p>I suspected there was shared information between electricity demand and temperature, so I introduced latent factors into the model. Using a shared matrix, I mapped the electricity and temperature curves into a lower-dimensional space via <span class="math">\(\Gamma\)</span>, capturing their common features. Then, each of these transformed vectors <em>(i.e.,</em> <span class="math">\(\eta^{(k)}\)</span> <em>below)</em> per functional variable are multiplied by a variable-specific matrix <em>(denoted by</em> <span class="math">\(\Lambda^{(k)}\)</span> <em>)</em>, transforming it into another set of coefficients <em>(</em> <span class="math">\(\beta^{(k)}\)</span> <em>)</em> that will be used to generate Latent Functional Factors.</p>
 <div class="math">
 \begin{equation*}
 \eta^{(k)}_{i} = \Gamma x^{(k)}_{i} + \epsilon
@@ -355,7 +355,7 @@ v_n = g \left(  \sum^{M}_{m=1} c_{nmk} \int_{\mathbb{T}} \phi_{nmk}(t) \; x_k(t)
 \beta^{(k)}_{i} = \Lambda^{(k)} \eta^{(k)}_{i} + \delta^{(k)}
 \end{equation*}
 </div>
-<p>This transformation allows us to capitalize on shared latent factors that both input curves share, enabling us to extract even more information from our data. This addition to our FNN changes its architecture to the following:</p>
+<p>This transformation allows us to capitalize on the latent factors that our <span class="math">\(k\)</span> input curves share, enabling us to extract even more information from our data. This addition to our FNN changes its architecture to the following:</p>
 <div class="figure align-center">
 <object data="../images/NN_2.svg" style="width: 60.0%;" type="image/svg+xml"></object>
 <p class="caption">Functional Neural Network Architecture with Latent Factors</p>
