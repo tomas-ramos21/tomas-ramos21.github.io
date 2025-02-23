@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="/theme/stylesheet/style.min.css">
+
+    <link id="dark-theme-style" rel="stylesheet" type="text/css"
+    href="/theme/stylesheet/dark-theme.min.css">
+
+    <link id="pygments-dark-theme" rel="stylesheet" type="text/css"
+          href="/theme/pygments/dracula.min.css">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/solid.css">
+
+
+
+
+
+
+
+ 
+
+<meta name="author" content="Tomas Aleixo Ramos" />
+<meta name="description" content="This article explores the impact of missing data in data science and AI/ML, breaking down the three main mechanisms—MCAR, MAR, and MNAR. It explains how these mechanisms influence your analysis and the risks of quick fixes, particularly when dropping rows with missing values. By understanding these concepts and using proper methods like imputation or statistical tests, you can minimize bias and uncertainty, ensuring reliable predictions and insights." />
+<meta name="keywords" content="Data Science, Missing Data">
+
+
+  <meta property="og:site_name" content="Bytes & Bites"/>
+  <meta property="og:title" content="Missing Data: Why it matters?"/>
+  <meta property="og:description" content="This article explores the impact of missing data in data science and AI/ML, breaking down the three main mechanisms—MCAR, MAR, and MNAR. It explains how these mechanisms influence your analysis and the risks of quick fixes, particularly when dropping rows with missing values. By understanding these concepts and using proper methods like imputation or statistical tests, you can minimize bias and uncertainty, ensuring reliable predictions and insights."/>
+  <meta property="og:locale" content="en_US"/>
+  <meta property="og:url" content="/2024/missing-data-why-it-matters.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="article:published_time" content="2024-10-28 18:50:00+08:00"/>
+  <meta property="article:modified_time" content=""/>
+  <meta property="article:author" content="/author/tomas-aleixo-ramos.html">
+  <meta property="article:section" content="articles"/>
+  <meta property="article:tag" content="Data Science"/>
+  <meta property="article:tag" content="Missing Data"/>
+  <meta property="og:image" content="">
+
+  <title>Bytes & Bites &ndash; Missing Data: Why it matters?</title>
+
+
+</head>
+<body class="dark-theme">
+
+<aside>
+  <div>
+    <a href="/">
+      <img src="/theme/img/profile.jpeg" alt="Tomás Aleixo Ramos" title="Tomás Aleixo Ramos">
+    </a>
+
+    <h1>
+      <a href="/">Tomás Aleixo Ramos</a>
+    </h1>
+
+    <p>Data Science & Engineering</p>
+
+
+
+    <ul class="social">
+      <li>
+        <a class="sc-linkedin"
+           href="https://www.linkedin.com/in/tomas-aleixo-ramos/"
+           target="_blank">
+          <i class="fa-brands fa-linkedin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="sc-github"
+           href="https://github.com/tomas-ramos21"
+           target="_blank">
+          <i class="fa-brands fa-github"></i>
+        </a>
+      </li>
+      <li>
+        <a class="sc-twitter"
+           href="https://twitter.com/TomasAleixo46"
+           target="_blank">
+          <i class="fa-brands fa-twitter"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+</aside>
+  <main>
+
+<nav>
+  <a href="/">Home</a>
+
+  <a href="/about/">About</a>
+  <a href="/projects/">Projects</a>
+
+
+</nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="missing-data-why-it-matters">Missing Data: Why it matters?</h1>
+    <p>
+      Posted on Mon 28 October 2024 in <a href="/category/articles.html">articles</a>
+
+    </p>
+  </header>
+
+
+  <div>
+    <p>Missing data is a challenge every DS or AI/ML team faces. It’s an unavoidable part of working with data—but often feels like a blocker to starting the “real work.” As a result, teams are frequently pushed to find quick fixes, driven by thight deadlines or stakeholder excitement. But these shortcuts almost always backfire. Quick solutions don’t hold up, and in most cases, they worsen predictions and inferences because the problem wasn’t properly addressed. Ironically, because the data is missing, it’s also hard to see just how much those hasty decisions harm your results. This article will shed some light over missing data theory. Allowing you to gauge the impact missing data can have on your work.</p>
+<div class="section" id="how-to-address-missing-data">
+<h2>How to Address Missing Data?</h2>
+<p>When dealing with missing data there are two approaches that you can take:</p>
+<ol class="arabic simple">
+<li><strong>Complete-Case (CC) Analysis:</strong> This method involves removing instances with missing values</li>
+<li><strong>Imputation:</strong> This method fills in the missing values</li>
+</ol>
+<p>This article focuses on CC Analysis, a widely used but often misapplied method. When performing CC Analysis, you <strong>must</strong> adjust the variance of the remaining data to account for the increased uncertainty caused by a reduced sample size. For example, if you initially have 400 observations but only 200 are complete, your estimates will be less precise due to fewer data points. Adjusting for this uncertainty involves the formula:</p>
+<div class="math">
+\begin{equation*}
+\textrm{Var}_{\textrm{Adjusted}}(y) = \textrm{Var}_{\textrm{Estimated}}(y) \times \left( 1 + \frac{\textrm{Number of Missing Cases}}{\textrm{Number of Complete Cases}} \right)
+\end{equation*}
+</div>
+<p>This formula shows how uncertainty increases with the proportion of missing data. Scaling the variance ensures statistically sound analyses even with a reduced dataset.</p>
+</div>
+<div class="section" id="why-is-the-data-missing">
+<h2>Why is the Data Missing?</h2>
+<p>The first step in tackling missing data is understanding why it’s missing. Without this knowledge, any method applied to address it is more guesswork than science. Your missing data can fall into one of three mechanisms:</p>
+<ol class="arabic simple">
+<li>Missing Completely at Random <strong>(MCAR)</strong></li>
+<li>Missing at Random <strong>(MAR)</strong></li>
+<li>Missing Not at Random <strong>(MNAR)</strong></li>
+</ol>
+<p>To explain these mechanisms, consider a scenario involving student exam grades (<span class="math">\(y\)</span>) and class attendance (<span class="math">\(x\)</span>). Higher attendance often leads to higher grades. A binary variable (<span class="math">\(m\)</span>) indicates missingness, where <span class="math">\(m=1\)</span> means the grade is present, and <span class="math">\(m=0\)</span> means it is missing.</p>
+<div class="figure align-center">
+<object data="../images/simulated_data_scatter.svg" style="width: 100%;" type="image/svg+xml"></object>
+</div>
+</div>
+<div class="section" id="mcar">
+<h2>MCAR</h2>
+<p>MCAR occurs when data is missing randomly, with no relationship to observed (<span class="math">\(x\)</span>) or unobserved (<span class="math">\(y\)</span>) values. For example, a student missing an exam due to an injury represents MCAR. The probability of missingness is constant:</p>
+<div class="math">
+\begin{equation*}
+\textrm{P}(m = 1 | y,x) = \textrm{P}(m = 0 | y,x)
+\end{equation*}
+</div>
+<p>To demonstrate this, I simulated an MCAR mechanism where each student's grade had a 30% probability of being missing. After adjusting the variance, the resulting distributions are as follows:</p>
+<div class="figure align-center">
+<object data="../images/Grade_MCAR_distribution_plot.svg" style="width: 100%;" type="image/svg+xml"></object>
+</div>
+<p>The grade distribution remains centered but has wider tails, reflecting increased uncertainty.</p>
+</div>
+<div class="section" id="mar">
+<h2>MAR</h2>
+<p>MAR occurs when missingness depends on observed values (<span class="math">\(x\)</span>). For instance, students with low attendance (<span class="math">\(x\)</span>) may skip exams, expecting poor grades. This relationship is expressed as:</p>
+<div class="math">
+\begin{equation*}
+\textrm{P}(m | y,x) = \textrm{P}(m | x)
+\end{equation*}
+</div>
+<p>When dealing with MAR, CC analysis is unsuitable. The dependence of missingness (m) on the observed value (x) introduces bias, invalidating the results. In this example, an MAR mechanism was simulated, where lower class attendance increased the probability of missing grades:</p>
+<div class="figure align-center">
+<object data="../images/Grade_MCAR_and_MAR_distribution_plot.svg" style="width: 100%;" type="image/svg+xml"></object>
+</div>
+<p>The distribution shifts significantly, becoming more left-skewed and centered farther from the original data. This illustrates how CC analysis in MAR scenarios introduces bias and leads to unreliable conclusions. Instead, imputation methods are required, which leverage the relationship between <span class="math">\(x\)</span> and <span class="math">\(y\)</span> to impute issing values. A detailed discussion on imputation will be covered in a future post.</p>
+</div>
+<div class="section" id="mnar">
+<h2>MNAR</h2>
+<p>MNAR is the most challenging case, where missingness depends on the missing value itself (<span class="math">\(y\)</span>). For example, students expecting poor grades might skip exams regardless of attendance. The relationship is expressed as:</p>
+<div class="math">
+\begin{equation*}
+\textrm{P}(m | y,x) = \textrm{P}(m | y)
+\end{equation*}
+</div>
+<p>Imputation is possible but complex, as it requires assumptions about the missing data. Future articles will explore techniques to handle MNAR effectively.</p>
+</div>
+<div class="section" id="determining-the-missingness-mechanisms">
+<h2>Determining the Missingness Mechanisms</h2>
+<p>Now that you understand the mechanisms behind missing data, let’s focus on how to identify which mechanism might be present in your dataset. While no method is foolproof, here are four commonly used approaches:</p>
+<ol class="arabic simple">
+<li><strong>Visualization:</strong> Plot the probability of missingness against a variable's range, such as attendance. If the probability is relatively flat, with no discernible patterns, the data is likely MCAR. For instance, the plot below shows simulated data with a 25% chance of <span class="math">\(y\)</span> being missing, where &quot;Attendance&quot; represents <span class="math">\(x\)</span>. The flat line suggests no systematic relationship between missingness and <span class="math">\(x\)</span>. Minor fluctuations at extremes (e.g., 30% attendance) arise from the rarity of these values in the simulation. Conversely, a clear pattern—linear or otherwise—likely indicates MAR or MNAR.</li>
+</ol>
+<div class="figure align-center">
+<object data="../images/miss_probability_mcar_mar.svg" style="width: 100%;" type="image/svg+xml"></object>
+</div>
+<ol class="arabic simple" start="2">
+<li><strong>Statistical Tests:</strong> To complement visualizations, you can perform statistical tests like Little’s MCAR test, which uses a <span class="math">\(\chi^2\)</span> distribution to assess whether mechanism is MCAR. Additionally, the Wald-Wolfowitz runs test can evaluate whether elements of the sequence are mutually independent, helping to detect patterns (e.g., MAR) in the missingness mechanism.</li>
+</ol>
+<p><span class="raw-html"><br /></span></p>
+<ol class="arabic simple" start="3">
+<li><strong>Modeling:</strong> Fit a predictive model, such as Logistic Regression, to estimate the probability of missingness (<span class="math">\(m=1\)</span> or <span class="math">\(m=0\)</span>). If no covariate other than the intercept (<span class="math">\(\beta_0\)</span>) has a statistically significant effect, the missingness pattern is likely MCAR. If the intercept is not statistically significant but another coefficient is—such as <span class="math">\(\beta_1\)</span> or <span class="math">\(\beta_2\)</span> —the mechanism is MAR (for <span class="math">\(\beta_1\)</span>) or MNAR (for <span class="math">\(\beta_2\)</span>, which requires <span class="math">\(y\)</span> to be imputed first). This approach assumes a well-fitted model that addresses potential non-linearities and avoids residual patterns.</li>
+</ol>
+<div class="math">
+\begin{equation*}
+\textrm{logit} \left( \frac{P(m | x,y)}{1 - P(m | x,y)} \right) = \beta_0 + \beta_1 x + \beta_2 y
+\end{equation*}
+</div>
+<ol class="arabic simple" start="4">
+<li><strong>Subject Matter Expertise:</strong> Involving individuals with in-depth knowledge of the data, processes, or context is invaluable when investigating the reasons behind missing data. Subject matter experts can offer insights or direct you toward likely causes of missingness. For instance, in the simulated student example, consulting teachers or the grade committee—who may have encountered similar cases over the years—can help clarify why certain grades are missing and guide the choice of appropriate handling techniques.</li>
+</ol>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion</h2>
+<p>Understanding and addressing missing data is vital for reliable analyses and predictions. Quick fixes like dropping rows often introduce bias and uncertainty. By identifying the missingness mechanism and applying appropriate methods, such as imputation, you can minimize these risks. Future articles will delve into advanced imputation techniques, including multiple imputation, to handle complex scenarios like MAR and MNAR.</p>
+<p>All code used in this article is available on my <a class="reference external" href="https://github.com/tomas-ramos21/Missing-Data">Github</a>. Rubin and Little’s seminal work on missing data theory, particularly their book, has been instrumental in shaping this field and is highly recommended. A <a class="reference external" href="https://onlinelibrary.wiley.com/doi/book/10.1002/9781119013563">link</a> to the book is provided below.</p>
+</div>
+<script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="/tag/data-science.html">Data Science</a>
+      <a href="/tag/missing-data.html">Missing Data</a>
+    </p>
+  </div>
+
+
+
+
+
+
+</article>
+
+<footer>
+<p>
+  &copy;   - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.en_US" target="_blank">Creative Commons Attribution-ShareAlike</a>
+</p>
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by-sa/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+           src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p></footer>  </main>
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " Bytes & Bites ",
+  "url" : "",
+  "image": "",
+  "description": ""
+}
+</script>
+</body>
+</html>
