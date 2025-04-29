@@ -165,7 +165,10 @@
 </div>
 <div class="section" id="mnar">
 <h2>MNAR</h2>
-<p>MNAR is the most challenging type of missingness, occurring when missingness depends directly on the missing values themselves (<span class="math">\(y\)</span>). For example, students who anticipate poor grades because they didn't take time to prepare for the exam may choose to skip it, regardless of their attendance record. This relationship is expressed as: <span class="math">\(\textrm{P}(m | y,x) = \textrm{P}(m | y)\)</span></p>
+<p>MNAR is the most challenging type of missingness, occurring when missingness depends directly on the missing values themselves (<span class="math">\(y\)</span>). For example, students who anticipate poor grades because they didn't take time to prepare for the exam may choose to skip it, regardless of their attendance record. This relationship is expressed as: <span class="math">\(\textrm{P}(m | y,x) = \textrm{P}(m | y)\)</span>. The figure below compares grade distribution under MNAR with the other distributions.</p>
+<div class="figure align-center">
+<object data="../images/Grade_MCAR_and_MAR_and_MNAR_distribution_plot.svg" style="width: 100%;" type="image/svg+xml"></object>
+</div>
 <p>Unlike MCAR and MAR, handling MNAR data is particularly difficult because the missing values themselves influence the probability of missingness. This means standard imputation methods may not work effectively without making strong assumptions about the missing data mechanism.</p>
 <p>While imputation is possible, it requires additional assumptions about the relationship between <span class="math">\(x\)</span> and <span class="math">\(y\)</span> and careful modeling of the missingness pattern.</p>
 </div>
@@ -187,7 +190,7 @@
 </ol>
 <div class="math">
 \begin{equation*}
-\textrm{logit} \left( P(m | x,y) \right) = \beta_0 + \beta_1 x + \beta_2 y
+\textrm{logit} \left( P(m \mid x,y) \right) = \beta_0 + \beta_1 x + \beta_2 y
 \end{equation*}
 </div>
 <p><span class="raw-html"><br /></span></p>

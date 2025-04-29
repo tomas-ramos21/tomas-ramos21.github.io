@@ -1,0 +1,464 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="/theme/stylesheet/style.min.css">
+
+    <link id="dark-theme-style" rel="stylesheet" type="text/css"
+    href="/theme/stylesheet/dark-theme.min.css">
+
+    <link id="pygments-dark-theme" rel="stylesheet" type="text/css"
+          href="/theme/pygments/dracula.min.css">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="/theme/font-awesome/css/solid.css">
+
+
+
+
+
+
+
+ 
+
+<meta name="author" content="Tomas Aleixo Ramos" />
+<meta name="description" content="This article explains how to address missing data through Multiple Imputation under MAR and MNAR mechanisms. It walks through building practical models, shows why MI produces more reliable estimates than Complete-Case analysis, and highlights how properly handling missingness preserves the validity of your conclusions." />
+<meta name="keywords" content="Data Science, Missing Data">
+
+
+  <meta property="og:site_name" content="Bytes & Bites"/>
+  <meta property="og:title" content="Missing Data: How to address it?"/>
+  <meta property="og:description" content="This article explains how to address missing data through Multiple Imputation under MAR and MNAR mechanisms. It walks through building practical models, shows why MI produces more reliable estimates than Complete-Case analysis, and highlights how properly handling missingness preserves the validity of your conclusions."/>
+  <meta property="og:locale" content="en_US"/>
+  <meta property="og:url" content="/2025/missing-data-how-to-address-it.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="article:published_time" content="2025-04-29 09:30:00+08:00"/>
+  <meta property="article:modified_time" content=""/>
+  <meta property="article:author" content="/author/tomas-aleixo-ramos.html">
+  <meta property="article:section" content="articles"/>
+  <meta property="article:tag" content="Data Science"/>
+  <meta property="article:tag" content="Missing Data"/>
+  <meta property="og:image" content="">
+
+  <title>Bytes & Bites &ndash; Missing Data: How to address it?</title>
+
+
+</head>
+<body class="dark-theme">
+
+<aside>
+  <div>
+    <a href="/">
+      <img src="/theme/img/profile.jpeg" alt="Tomás Aleixo Ramos" title="Tomás Aleixo Ramos">
+    </a>
+
+    <h1>
+      <a href="/">Tomás Aleixo Ramos</a>
+    </h1>
+
+    <p>Data Science & Engineering</p>
+
+
+
+    <ul class="social">
+      <li>
+        <a class="sc-linkedin"
+           href="https://www.linkedin.com/in/tomas-aleixo-ramos/"
+           target="_blank">
+          <i class="fa-brands fa-linkedin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="sc-github"
+           href="https://github.com/tomas-ramos21"
+           target="_blank">
+          <i class="fa-brands fa-github"></i>
+        </a>
+      </li>
+      <li>
+        <a class="sc-twitter"
+           href="https://twitter.com/TomasAleixo46"
+           target="_blank">
+          <i class="fa-brands fa-twitter"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+</aside>
+  <main>
+
+<nav>
+  <a href="/">Home</a>
+
+  <a href="/about/">About</a>
+  <a href="/projects/">Projects</a>
+
+
+</nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="missing-data-how-to-address-it">Missing Data: How to address it?</h1>
+    <p>
+      Posted on Tue 29 April 2025 in <a href="/category/articles.html">articles</a>
+
+    </p>
+  </header>
+
+
+  <div>
+    <p>In the <a class="reference external" href="https://tomasaleixoramos.com/2025/missing-data-why-does-it-matter.html#missing-data-why-does-it-matter">previous article</a> on missing data, we explored common missing data patterns, their definitions, and the drawbacks of Complete-Case (CC) analysis. This time, we'll focus on handling different types of missing data using Multiple Imputation (MI). By the end of this article, you’ll not only understand the theory behind missing data but also learn how to build your own models to address it.</p>
+<div class="section" id="multiple-imputation-purpose">
+<h2>Multiple Imputation Purpose</h2>
+<p>MI arises from the idea that missing values don't have a single correct answer but rather a range of plausible values. Instead of filling in a single estimate, MI acknowledges this uncertainty by drawing multiple possible values based on the data's distribution.</p>
+<p>Consider our previous example of student grades. If we impute a missing grade as 80%, why stop there? A student with similar performance might have received a 77%, 81%, or even 84%. These alternatives are not just arbitrary; they reflect the natural variability in that student's performance. The key question is: how likely are these other values compared to the one we chose? MI addresses this by generating multiple (<span class="math">\(D\)</span>) datasets with different imputed values, each sampled from a realistic distribution. By analyzing all of them together, we get a robust and unbiased estimate, reducing the risk of underestimating uncertainty in our final conclusions.</p>
+</div>
+<div class="section" id="multiple-imputation-definition">
+<h2>Multiple Imputation Definition</h2>
+<p>Let's continue with the student example from the previous article. To estimate the average student grade, denoted as <span class="math">\(\theta\)</span>, we must account for both observed (<span class="math">\(Y_{\textrm{obs}}\)</span>) and missing data (<span class="math">\(Y_{\textrm{miss}}\)</span>). The full posterior distribution of <span class="math">\(\theta\)</span>, given both components is expressed as:</p>
+<div class="math">
+\begin{equation*}
+p(\theta \mid Y_{\textrm{obs}}, \; Y_{\textrm{miss}})
+\end{equation*}
+</div>
+<p>Since we don’t actually observe <span class="math">\(Y_{\textrm{miss}}\)</span>, this posterior is hypothetical—it represents the distribution we would have obtained if the missing data were known. Using Bayes’ theorem, we express it in proportional form:</p>
+<div class="math">
+\begin{equation*}
+p(\theta \mid Y_{\textrm{obs}}, \; Y_{\textrm{miss}}) \propto L(\theta \mid Y_{\textrm{obs}}, \; Y_{\textrm{miss}}) \; p(\theta)
+\end{equation*}
+</div>
+<p>where:</p>
+<ul class="simple">
+<li><span class="math">\(L(\theta \mid Y_{\textrm{obs}}, \; Y_{\textrm{miss}})\)</span>, is the likelihood function with observed and missing components</li>
+<li><span class="math">\(p(\theta)\)</span>, os our prior belief about <span class="math">\(\theta\)</span></li>
+</ul>
+<p>In practice, since <span class="math">\(Y_{\textrm{miss}}\)</span> is unknown, we need to marginalize over its distribution, integrating out the uncertainty:</p>
+<div class="math">
+\begin{equation*}
+p(\theta \mid Y_{\textrm{obs}}) = \int p(\theta, \; Y_{\textrm{miss}} \mid Y_{\textrm{obs}}) \; dY_{\textrm{miss}}
+\end{equation*}
+</div>
+<p>The problem is how to integrate it out in a reasonable manner. One way in which this can be done is by <strong>assuming</strong> that we can use the observed data (<span class="math">\(Y_{\textrm{obs}}\)</span>) to reasonably impute the missing data units (<span class="math">\(Y_{\textrm{miss}}\)</span>). Thus, modifying our previous integral into the following form:</p>
+<div class="math">
+\begin{equation*}
+p(\theta \mid Y_{\textrm{obs}}) = \int p(\theta \mid Y_{\textrm{obs}}, \; Y_{\textrm{miss}}) \; \boldsymbol{p(Y_{\textrm{miss}} \mid Y_{\textrm{obs}})} \; dY_{\textrm{miss}}
+\end{equation*}
+</div>
+<p>What we will create is a model that fullfills <span class="math">\(\; \boldsymbol{p(Y_{\textrm{miss}} \mid Y_{\textrm{obs}})} \;\)</span> in this integral. Allowing us to draw multiple plausible values from this conditional distribution. Hence, MI approximates this integral by generating multiple datasets (<span class="math">\(D\)</span>) with different imputed values sampled from our yet to be created model and then combining the average (<span class="math">\(\bar{\theta}\)</span>) of each imputed <span class="math">\(d\)</span> dataset to produce an unbiased estimate of the average grade of our students. Like so:</p>
+<div class="math">
+\begin{equation*}
+\mathbb{E}[\theta] = \frac{1}{D} \sum^D_{d=1} \bar{\theta}_d \qquad \textrm{Var}(\theta) = \frac{1}{D} \sum^D_{d=1} \bar{\textrm{Var}}(\theta_d) + \frac{1}{D-1} \sum^D_{d=1} (\bar{\theta}_d  - \mathbb{E}[\theta])^2
+\end{equation*}
+</div>
+<p>The variance terms are the imputation variance of each <span class="math">\(d\)</span> dataset and the &quot;between-imputation&quot; variance, which refers to the variability between the <span class="math">\(D\)</span> datasets.</p>
+</div>
+<div class="section" id="modeling-mar">
+<h2>Modeling MAR</h2>
+<p>Given that under MAR both the outcome (<span class="math">\(y\)</span>) and the missingness mechanism (<span class="math">\(m\)</span>) depend only on the observed features (<span class="math">\(x\)</span>), our imputation model will be structured accordingly. Specifically, the imputation of <span class="math">\(y\)</span> will be modeled conditional on <span class="math">\(x\)</span>, reflecting the relationship <span class="math">\(P(y \mid x)\)</span>. To implement this approach, we will use <a class="reference external" href="https://mc-stan.org">Stan</a> to build a Bayesian MI model, defined as follows:</p>
+<div class="highlight"><pre><span></span><span class="kn">data</span> <span class="p">{</span>
+  <span class="kt">int</span><span class="o">&lt;</span><span class="k">lower</span><span class="p">=</span><span class="mf">0</span><span class="o">&gt;</span> <span class="n">N_obs</span><span class="p">;</span>                               <span class="c1">// Number of observed Y values</span>
+  <span class="kt">int</span><span class="o">&lt;</span><span class="k">lower</span><span class="p">=</span><span class="mf">0</span><span class="o">&gt;</span> <span class="n">N_mis</span><span class="p">;</span>                               <span class="c1">// Number of missing Y values</span>
+  <span class="kt">int</span><span class="o">&lt;</span><span class="k">lower</span><span class="p">=</span><span class="mf">1</span><span class="o">&gt;</span> <span class="n">N_total</span><span class="p">;</span>                             <span class="c1">// Total number of data points</span>
+  <span class="kt">int</span><span class="o">&lt;</span><span class="k">lower</span><span class="p">=</span><span class="mf">1</span><span class="o">&gt;</span> <span class="n">K</span><span class="p">;</span>                                   <span class="c1">// Number of Predictors</span>
+  <span class="kt">matrix</span><span class="p">[</span><span class="n">N_total</span><span class="p">,</span> <span class="n">K</span><span class="p">]</span> <span class="n">X</span><span class="p">;</span>                             <span class="c1">// Design Matrix</span>
+  <span class="kt">vector</span><span class="p">[</span><span class="n">N_obs</span><span class="p">]</span> <span class="n">Y_obs</span><span class="p">;</span>                              <span class="c1">// Observed values of Y</span>
+  <span class="kt">array</span><span class="p">[</span><span class="n">N_obs</span><span class="p">]</span> <span class="kt">int</span><span class="o">&lt;</span><span class="k">lower</span><span class="p">=</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="k">upper</span><span class="p">=</span><span class="n">N_total</span><span class="o">&gt;</span> <span class="n">obs_idx</span><span class="p">;</span> <span class="c1">// Indices of observed Y</span>
+  <span class="kt">array</span><span class="p">[</span><span class="n">N_mis</span><span class="p">]</span> <span class="kt">int</span><span class="o">&lt;</span><span class="k">lower</span><span class="p">=</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="k">upper</span><span class="p">=</span><span class="n">N_total</span><span class="o">&gt;</span> <span class="n">mis_idx</span><span class="p">;</span> <span class="c1">// Indices of missing Y</span>
+<span class="p">}</span>
+
+<span class="kn">parameters</span> <span class="p">{</span>
+  <span class="kt">vector</span><span class="p">[</span><span class="mf">2</span><span class="p">]</span> <span class="n">beta</span><span class="p">;</span>       <span class="c1">// β Coefficients</span>
+  <span class="kt">real</span><span class="o">&lt;</span><span class="k">lower</span><span class="p">=</span><span class="mf">1e-3</span><span class="o">&gt;</span> <span class="n">phi</span><span class="p">;</span> <span class="c1">// Dispersion for Beta Distribution</span>
+<span class="p">}</span>
+
+<span class="kn">transformed parameters</span> <span class="p">{</span>
+  <span class="kt">vector</span><span class="o">&lt;</span><span class="k">lower</span><span class="p">=</span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="k">upper</span><span class="p">=</span><span class="mf">1</span><span class="o">&gt;</span><span class="p">[</span><span class="n">N_obs</span><span class="p">]</span> <span class="n">mu_obs</span><span class="p">;</span>
+  <span class="n">mu_obs</span> <span class="o">=</span> <span class="nb">inv_logit</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">obs_idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">beta</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kn">model</span> <span class="p">{</span>
+  <span class="n">beta</span> <span class="o">~</span><span class="w"> </span><span class="nb">normal</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span> <span class="mf">2</span><span class="p">);</span>
+  <span class="n">phi</span> <span class="o">~</span><span class="w"> </span><span class="nb">gamma</span><span class="p">(</span><span class="mf">2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="mf">1</span><span class="o">:</span><span class="n">N_obs</span><span class="p">)</span>
+    <span class="n">Y_obs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">~</span><span class="w"> </span><span class="nb">beta</span><span class="p">(</span><span class="n">mu_obs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">phi</span><span class="p">,</span> <span class="p">(</span><span class="mf">1</span> <span class="o">-</span> <span class="n">mu_obs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">phi</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kn">generated quantities</span> <span class="p">{</span>
+  <span class="kt">vector</span><span class="o">&lt;</span><span class="k">lower</span><span class="p">=</span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="k">upper</span><span class="p">=</span><span class="mf">1</span><span class="o">&gt;</span><span class="p">[</span><span class="n">N_mis</span><span class="p">]</span> <span class="n">Y_mis</span><span class="p">;</span>
+  <span class="kt">vector</span><span class="o">&lt;</span><span class="k">lower</span><span class="p">=</span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="k">upper</span><span class="p">=</span><span class="mf">1</span><span class="o">&gt;</span><span class="p">[</span><span class="n">N_mis</span><span class="p">]</span> <span class="n">mu_mis</span><span class="p">;</span>
+
+  <span class="n">mu_mis</span> <span class="o">=</span> <span class="nb">inv_logit</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">mis_idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">beta</span><span class="p">);</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="mf">1</span><span class="o">:</span><span class="n">N_mis</span><span class="p">)</span>
+    <span class="n">Y_mis</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">beta_rng</span><span class="p">(</span><span class="n">mu_mis</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">phi</span><span class="p">,</span> <span class="p">(</span><span class="mf">1</span> <span class="o">-</span> <span class="n">mu_mis</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">phi</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+<p>To illustrate our point, we simulate a missing data rate of 48% across 800 students. Despite the loss, we still retain 410 students, which is generally sufficient to estimate the mean. The real challenge, however, lies in the MAR mechanism, which systematically shifts the mean.</p>
+<p>After fitting the model and generating one hundred imputed datasets (<span class="math">\(D = 100\)</span>), we estimate the average grade and its 95% confidence interval (CI). The table below compares the estimates from MI and CC analysis under the simulated MAR mechanism, along with the true mean from the original (complete) dataset.</p>
+<table style="width: 60%; margin: auto; text-align: center; border-collapse: collapse; font-family: Arial, sans-serif; color: #bcc1cc;">
+   <caption style="font-weight: bold; padding: 10px;">MAR: Average Student Grade as Percentages</caption>
+   <thead>
+      <tr>
+         <th style="padding: 10px; border: 1px solid #bcc1cc; background-color: #16181d;">Method</th>
+         <th style="padding: 10px; border: 1px solid #bcc1cc; background-color: #16181d;">Average</th>
+         <th style="padding: 10px; border: 1px solid #bcc1cc; background-color: #16181d;">Lower CI</th>
+         <th style="padding: 10px; border: 1px solid #bcc1cc; background-color: #16181d;">Higher CI</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2f333d;">Original Data</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc;">66.6%</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc;">65.7%</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc;">67.4%</td>
+      </tr>
+      <tr>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2f333d;">MI</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc;">66.1%</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc;">65.1%</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc;">67.1%</td>
+      </tr>
+      <tr>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2f333d;">MAR CC</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc;">64.8%</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc;">63.6%</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc;">65.9%</td>
+      </tr>
+   </tbody>
+</table><p>Compared to the original dataset, the mean estimated via MI is notably closer to the true mean than the mean obtained using CC analysis. Notice that the CI of the mean from the CC analysis <strong>does not include</strong> the true mean of the original dataset.</p>
+<p>To formally assess statistical significance of these differences, we perform hypothesis tests to compare the estimated means against the true mean. Thus, our hypotheses are:</p>
+<ul class="simple">
+<li><span class="math">\(H_0\)</span>: The estimated mean is equal to the true mean</li>
+<li><span class="math">\(H_1\)</span>: The estimated mean is different from the true mean</li>
+</ul>
+<p>The CC analysis yields a <span class="math">\(p\)</span>-value of 0.003, which tells us that there is significant statistical difference from the original mean. In contrast, the MI estimate does <strong>not</strong> significantly differ from the true mean, with a <span class="math">\(p\)</span>-value of 0.295.</p>
+<p>The figure below displays the t-distribution corresponding to both tests, along with the locations of their t-statistics, and the significance threshold. This comparison highlights the importance of addressing missing data and how it provides a reliable recovery of the original mean.</p>
+<div class="figure align-center">
+<object data="../images/Grade_MAR_CC_MI_t-distribution_plot.svg" style="width: 100%;" type="image/svg+xml"></object>
+</div>
+</div>
+<div class="section" id="modeling-mnar">
+<h2>Modeling MNAR</h2>
+<p>Given that under MNAR the missingness mechanism (<span class="math">\(m\)</span>) depends directly on the unobserved outcome (<span class="math">\(y\)</span>), we must jointly model both processes. Specifically, we model <span class="math">\(P(y \mid x)\)</span> for the outcome and <span class="math">\(P(m \mid y)\)</span> for the missingness mechanism. The modeling of the missingness mechanism is achieved via a Bernoulli component that predicts the probability that each value is missing. This Bernoulli component ties the two models together by using the imputed values of <span class="math">\(y\)</span> as inputs when modeling the probability of missingness, thereby enforcing the MNAR dependency structure during estimation.</p>
+<div class="highlight"><pre><span></span><span class="kn">data</span> <span class="p">{</span>
+  <span class="kt">int</span><span class="o">&lt;</span><span class="k">lower</span><span class="p">=</span><span class="mf">0</span><span class="o">&gt;</span> <span class="n">N_obs</span><span class="p">;</span>                     <span class="c1">// Number of observed Y values</span>
+  <span class="kt">int</span><span class="o">&lt;</span><span class="k">lower</span><span class="p">=</span><span class="mf">0</span><span class="o">&gt;</span> <span class="n">N_mis</span><span class="p">;</span>                     <span class="c1">// Number of missing Y values</span>
+  <span class="kt">int</span><span class="o">&lt;</span><span class="k">lower</span><span class="p">=</span><span class="mf">1</span><span class="o">&gt;</span> <span class="n">N_total</span><span class="p">;</span>                   <span class="c1">// Total number of data points</span>
+  <span class="kt">int</span><span class="o">&lt;</span><span class="k">lower</span><span class="p">=</span><span class="mf">1</span><span class="o">&gt;</span> <span class="n">K</span><span class="p">;</span>                         <span class="c1">// Number of predictors</span>
+  <span class="kt">matrix</span><span class="p">[</span><span class="n">N_total</span><span class="p">,</span> <span class="n">K</span><span class="p">]</span> <span class="n">X</span><span class="p">;</span>                   <span class="c1">// Design matrix</span>
+  <span class="kt">vector</span><span class="p">[</span><span class="n">N_obs</span><span class="p">]</span> <span class="n">Y_obs</span><span class="p">;</span>                    <span class="c1">// Observed Y values</span>
+  <span class="kt">array</span><span class="p">[</span><span class="n">N_total</span><span class="p">]</span> <span class="kt">int</span><span class="o">&lt;</span><span class="k">lower</span><span class="p">=</span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="k">upper</span><span class="p">=</span><span class="mf">1</span><span class="o">&gt;</span> <span class="n">M</span><span class="p">;</span> <span class="c1">// Missingness indicator</span>
+<span class="p">}</span>
+
+<span class="kn">parameters</span> <span class="p">{</span>
+  <span class="kt">vector</span><span class="o">&lt;</span><span class="k">lower</span><span class="p">=</span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="k">upper</span><span class="p">=</span><span class="mf">1</span><span class="o">&gt;</span><span class="p">[</span><span class="n">N_mis</span><span class="p">]</span> <span class="n">Y_mis</span><span class="p">;</span> <span class="c1">// Imputed Y values</span>
+  <span class="kt">vector</span><span class="p">[</span><span class="n">K</span><span class="p">]</span> <span class="n">beta</span><span class="p">;</span>                        <span class="c1">// β Coefficients</span>
+  <span class="kt">real</span><span class="o">&lt;</span><span class="k">lower</span><span class="p">=</span><span class="mf">1e-3</span><span class="o">&gt;</span> <span class="n">phi</span><span class="p">;</span>                  <span class="c1">// Dispersion for Beta Distribution</span>
+  <span class="kt">real</span> <span class="n">alpha0</span><span class="p">;</span>                           <span class="c1">// Intercept for Missingness Model</span>
+  <span class="kt">real</span> <span class="n">alpha1</span><span class="p">;</span>                           <span class="c1">// Y-dependent Missingness</span>
+<span class="p">}</span>
+
+<span class="kn">model</span> <span class="p">{</span>
+  <span class="n">beta</span> <span class="o">~</span><span class="w"> </span><span class="nb">normal</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span> <span class="mf">2</span><span class="p">);</span>
+  <span class="n">phi</span> <span class="o">~</span><span class="w"> </span><span class="nb">gamma</span><span class="p">(</span><span class="mf">2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">);</span>
+  <span class="n">alpha0</span> <span class="o">~</span><span class="w"> </span><span class="nb">normal</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span> <span class="mf">2</span><span class="p">);</span>
+  <span class="n">alpha1</span> <span class="o">~</span><span class="w"> </span><span class="nb">normal</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span> <span class="mf">2</span><span class="p">);</span>
+
+  <span class="kt">vector</span><span class="p">[</span><span class="n">N_total</span><span class="p">]</span> <span class="n">Y</span><span class="p">;</span>
+  <span class="kt">vector</span><span class="p">[</span><span class="n">N_total</span><span class="p">]</span> <span class="n">mu</span><span class="p">;</span>
+
+  <span class="c1">// Collect observed and imputed Y values</span>
+  <span class="kt">int</span> <span class="n">pos_obs</span> <span class="o">=</span> <span class="mf">1</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">pos_mis</span> <span class="o">=</span> <span class="mf">1</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="mf">1</span><span class="o">:</span><span class="n">N_total</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mf">0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Y_obs</span><span class="p">[</span><span class="n">pos_obs</span><span class="p">];</span>
+      <span class="n">pos_obs</span> <span class="o">+=</span> <span class="mf">1</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Y_mis</span><span class="p">[</span><span class="n">pos_mis</span><span class="p">];</span>
+      <span class="n">pos_mis</span> <span class="o">+=</span> <span class="mf">1</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="n">mu</span> <span class="o">=</span> <span class="nb">inv_logit</span><span class="p">(</span><span class="n">X</span> <span class="o">*</span> <span class="n">beta</span><span class="p">);</span>
+  <span class="c1">// Imputation Model, which depends on X</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="mf">1</span><span class="o">:</span><span class="n">N_total</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">~</span><span class="w"> </span><span class="nb">beta</span><span class="p">(</span><span class="n">mu</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">phi</span><span class="p">,</span> <span class="p">(</span><span class="mf">1</span> <span class="o">-</span> <span class="n">mu</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">phi</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="c1">// Missingness Model, which depends on Y.</span>
+  <span class="c1">// It connects the imputated values to probability of missingness.</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="mf">1</span><span class="o">:</span><span class="n">N_total</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">~</span><span class="w"> </span><span class="nb">bernoulli_logit</span><span class="p">(</span><span class="n">alpha0</span> <span class="o">+</span> <span class="n">alpha1</span> <span class="o">*</span> <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kn">generated quantities</span> <span class="p">{</span>
+  <span class="kt">vector</span><span class="p">[</span><span class="n">N_mis</span><span class="p">]</span> <span class="n">Y_mis_draw</span><span class="p">;</span>
+  <span class="n">Y_mis_draw</span> <span class="o">=</span> <span class="n">Y_mis</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p>Just as for MAR the table below compares the estimates using MI, CC analysis, and the original data.</p>
+<table style="width: 60%; margin: auto; text-align: center; border-collapse: collapse; font-family: Arial, sans-serif; color: #bcc1cc;">
+   <caption style="font-weight: bold; padding: 10px;">MNAR: Average Student Grade as Percentages</caption>
+   <thead>
+      <tr>
+         <th style="padding: 10px; border: 1px solid #bcc1cc; background-color: #16181d;">Method</th>
+         <th style="padding: 10px; border: 1px solid #bcc1cc; background-color: #16181d;">Average</th>
+         <th style="padding: 10px; border: 1px solid #bcc1cc; background-color: #16181d;">Lower CI</th>
+         <th style="padding: 10px; border: 1px solid #bcc1cc; background-color: #16181d;">Higher CI</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2f333d;">Original Data</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc;">66.6%</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc;">65.7%</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc;">67.4%</td>
+      </tr>
+      <tr>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2f333d;">MI</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc;">66.0%</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc;">65.0%</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc;">67.0%</td>
+      </tr>
+      <tr>
+         <td style="padding: 10px; border: 1px solid #bcc1cc; background-color: #2f333d;">MNAR CC</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc;">63.4%</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc;">62.3%</td>
+         <td style="padding: 10px; border: 1px solid #bcc1cc;">64.5%</td>
+      </tr>
+   </tbody>
+</table><p>Compared to the original dataset, the mean estimated via MI is notably closer to the true mean than the mean obtained using CC analysis under the MNAR mechanism. Notice that the CI of the mean from the CC analysis does not include the true mean of the original dataset. In this case, the evidence against the CC estimate is even stronger — the hypothesis test yields a <span class="math">\(p\)</span>-value of 0.000 for CC analysis, indicating a statistically significant difference, while the MI estimate shows no significant difference with a <span class="math">\(p\)</span>-value of 0.275.</p>
+<div class="figure align-center">
+<object data="../images/Grade_MNAR_CC_MI_t-distribution_plot.svg" style="width: 100%;" type="image/svg+xml"></object>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion</h2>
+<p>In this article, we moved beyond theory and showed how to build practical models to address missing data under both MAR and MNAR mechanisms. By leveraging MI, we demonstrated that properly modeling missingness — rather than ignoring it — leads to estimates that remain faithful to the true underlying values.</p>
+<p>Through examples and complete model code, you have now seen how to build MI models and understand the risks of relying solely on CC analysis. Handling missing data is not just about filling gaps; it’s about safeguarding the integrity and credibility of your insights.</p>
+<p>Mastering these techniques opens the door to more robust analyses, more confident decisions, and ultimately, more impactful work.</p>
+<p>As always, you may refer to all the code used to build this article on my <a class="reference external" href="https://github.com/tomas-ramos21/Missing-Data">Github</a>.</p>
+</div>
+<script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="/tag/data-science.html">Data Science</a>
+      <a href="/tag/missing-data.html">Missing Data</a>
+    </p>
+  </div>
+
+
+
+
+
+
+</article>
+
+<footer>
+<p>
+  &copy;   - This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.en_US" target="_blank">Creative Commons Attribution-ShareAlike</a>
+</p>
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p><p>
+  <a rel="license"
+     href="http://creativecommons.org/licenses/by-sa/4.0/"
+     target="_blank">
+    <img alt="Creative Commons License"
+         title="Creative Commons License"
+         style="border-width:0"
+           src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png"
+         width="80"
+         height="15"/>
+  </a>
+</p></footer>  </main>
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " Bytes & Bites ",
+  "url" : "",
+  "image": "",
+  "description": ""
+}
+</script>
+</body>
+</html>
